@@ -1,15 +1,22 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div id="app">
+    <header>
+      <router-link to="/">Home</router-link> |
+      <router-link to="/login">Login</router-link>
+    </header>
+
+    <router-view />
+  </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+
+//  import routerView from "vue-router";
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    // routerView
   }
 }
 </script>
@@ -31,4 +38,4 @@ body {
 #app {
   height: 100vh;
 }
-</style>
+</style>  
