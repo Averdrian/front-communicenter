@@ -1,10 +1,10 @@
 <template>
-  <div id="app">
-    <header>
-      <router-link to="/">Home</router-link> |
-      <router-link to="/login">Login</router-link>
-    </header>
 
+  <title>
+    Communicenter
+  </title>
+
+  <div id="app">
     <router-view />
   </div>
 </template>
