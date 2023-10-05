@@ -17,7 +17,10 @@ export default {
   name: 'App',
   components: {
     // routerView
-  }
+  },
+
+
+
 }
 </script>
 
