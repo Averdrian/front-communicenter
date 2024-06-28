@@ -4,8 +4,8 @@ import HelloWorld from "@/components/HelloWorld.vue";
 import Login from "@/components/Login.vue";
 
 const routes = [
-    { path: "/", component: HelloWorld },
-    { path: "/login", component: Login }
+    { path: "/", component: HelloWorld, name: "landing" },
+    { path: "/login", component: Login, name:"login" }
 ];
 
 const router = createRouter({

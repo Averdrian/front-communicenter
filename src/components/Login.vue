@@ -11,38 +11,43 @@
           <label for="password">Contraseña:</label>
           <input type="password" id="password" v-model="password" required />
         </div>
-        <button type="submit">Login</button>
+        <button type="button"  @click="handleLogin">Login</button>
       </form>
     </div>
   </template>
   
   <script>
+
+  import { mapActions } from 'vuex';
+
   export default {
     data() {
       return {
         email: '',
-        password: ''
+        password: '',
+        error: false
       };
     },
     methods: {
-      login() {
-        // Aquí puedes agregar la lógica para manejar el login
-        console.log('Email:', this.email);
-        console.log('Contraseña:', this.password);
-        // Por ejemplo, podrías hacer una petición a tu API de autenticación
-        // axios.post('/api/login', { email: this.email, password: this.password })
-        //   .then(response => {
-        //     console.log(response.data);
-        //   })
-        //   .catch(error => {
-        //     console.error(error);
-        //   });
+      ...mapActions(['login']),
+      async handleLogin() {
+      try {
+        const credentials = {
+          email: this.email,
+          password: this.password,
+        };
+        await this.login(credentials);
+        this.$router.push({name: 'landing'});
+      } catch (error) {
+        this.error = error;
       }
     }
+  }
   };
   </script>
   
   <style scoped>
+
   .login {
     max-width: 400px;
     margin: 0 auto;
@@ -74,5 +79,6 @@
   button:hover {
     background-color: #0056b3;
   }
-  </style>
+  
+</style>
   
