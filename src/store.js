@@ -18,8 +18,8 @@ const store = createStore({
   },
   actions: {
     async login({ commit }, credentials) {
-        let user = await login(credentials.email, credentials.password);
-      commit('SET_USER', user);
+      let user = await login(credentials.email, credentials.password);
+      commit('SET_USER', user.data.user);
     },
     async logout({ commit }) {
       await logout();

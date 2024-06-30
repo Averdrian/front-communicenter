@@ -1,4 +1,7 @@
 <template>
+  <title>
+    Communicenter
+  </title>
     <img alt="Vue logo" src="../assets/logo.png">
 
   <div class="hello">
@@ -29,13 +32,30 @@
       <li><a href="https://vue-loader.vuejs.org" target="_blank" rel="noopener">vue-loader</a></li>
       <li><a href="https://github.com/vuejs/awesome-vue" target="_blank" rel="noopener">awesome-vue</a></li>
     </ul>
+    <button @click="funcion">AA</button>
   </div>
 </template>
 
 <script>
+
+import { mapGetters } from 'vuex';
+
 export default {
   name: 'HelloWorld',
   props: {
+  },
+  computed: {
+    ...mapGetters(['user', 'isAuthenticated'])
+  },
+
+  mounted() {
+    console.log(this.user);
+  },
+
+  methods : {
+    funcion : function() {
+      console.log(this.user.email);
+    }
   }
 }
 </script>

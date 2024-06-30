@@ -1,23 +1,23 @@
 <template>
 
-  <title>
-    Communicenter
-  </title>
+  <Header class="header"/>
 
-  <div id="app">
+  <div id="app" class="view">
     <router-view />
   </div>
 </template>
 
 <script>
 
-//  import routerView from "vue-router";
+
+import Header from './components/Header';
 
 export default {
   name: 'App',
   components: {
-    // routerView
+    Header,
   },
+  
 
 
 }
@@ -37,7 +37,19 @@ body {
   margin: 0px;
 }
 
-#app {
+/*#app {
   height: 100vh;
+}*/
+
+.header {
+  height: 10vh;
+  max-height: 10vh !important;
+  display:contents;
 }
+
+.view {
+  height: 90vh !important;
+}
+
+
 </style>  
