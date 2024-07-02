@@ -1,5 +1,6 @@
 <!-- src/components/Login.vue -->
 <template>
+    <ViewTitle title="Login"/>
     <div class="login">
       <h2>Login</h2>
       <form @submit.prevent="login">
@@ -19,6 +20,7 @@
   <script>
 
   import { mapActions } from 'vuex';
+  import ViewTitle from '@/components/ViewTitle.vue';
 
   export default {
     data() {
@@ -28,6 +30,7 @@
         error: false
       };
     },
+    components : {ViewTitle},
     methods: {
       ...mapActions(['login']),
       async handleLogin() {

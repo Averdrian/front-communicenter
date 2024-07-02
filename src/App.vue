@@ -1,5 +1,5 @@
 <template>
-
+  <head><title>Communicenter</title></head>
   <Header class="header"/>
 
   <div id="app" class="view">

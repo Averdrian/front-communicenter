@@ -1,7 +1,5 @@
 <template>
-  <title>
-    Communicenter
-  </title>
+    <ViewTitle title="Home"/>
     <img alt="Vue logo" src="../assets/logo.png">
 
   <div class="hello">
@@ -39,11 +37,13 @@
 <script>
 
 import { mapGetters } from 'vuex';
+import ViewTitle from '../components/ViewTitle.vue';
 
 export default {
   name: 'HelloWorld',
   props: {
   },
+  components : {ViewTitle},
   computed: {
     ...mapGetters(['user', 'isAuthenticated'])
   },

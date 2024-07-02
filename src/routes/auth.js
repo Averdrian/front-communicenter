@@ -2,8 +2,6 @@ import axiosInstance from "../axios"
 
 
     export function login(email, password) {
-        console.log(email, password)
-        console.log("hola");
         let response = axiosInstance.post("/login", {email:email, password:password})
             .then( response => {
                 return response;
