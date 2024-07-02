@@ -1,7 +1,7 @@
 <template>
     <div class="header">
       <div class="logo-container">
-        <img class="logo" src="logo.png" alt="Logo">
+        <!-- <img class="logo" src="logo.png" alt="Logo"> -->
       </div>
       <div class="menu">
         <button @click="goToProfile">Perfil</button>
