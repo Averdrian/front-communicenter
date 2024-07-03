@@ -52,9 +52,9 @@ import {chats} from '@/routes/chats';
 
 .main-chat {
   flex: 2;
-  background-color: #121212; /* Color de fondo aún más oscuro */
+  background-color: #2f2e2e; /* Color de fondo aún más oscuro */
   padding: 10px;
   box-sizing: border-box;
   color: #ddd; /* Color del texto más claro */
-}
+} 
 </style>

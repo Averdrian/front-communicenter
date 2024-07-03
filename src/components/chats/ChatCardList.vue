@@ -1,6 +1,6 @@
 <template>
     <div class="chat-list">
-      <ChatCard v-for="n in chat_list" :key="n" />
+      <ChatCard v-for="n in chat_list" :chat="n" :key="n" />
     </div>
   </template>
   

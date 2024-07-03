@@ -48,6 +48,9 @@ export default {
     this.fixEmailHeight();
     window.addEventListener("resize", this.fixEmailHeight);
   },
+  unmounted() {
+    window.removeEventListener("resize", this.fixEmailHeight);
+  },
   methods: {
     ...mapActions(['login']),
     togglePasswordVisibility() {
@@ -154,23 +157,9 @@ form input:focus {
 
 button {
   width: 100%;
-  padding: 1em;
-  border: none;
-  border-radius: 5px;
-  background-color: #FFD700;
-  color: black;
-  font-size: 1.2em;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
 }
 
-button:hover {
-  background-color: #FFC107;
-}
 
-button:focus {
-  outline: none;
-}
 
 .error-message {
   margin-top: 1em;
