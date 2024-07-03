@@ -1,16 +1,22 @@
- <template>
+<template>
     <div class="chat-card">
       <div class="card-header">
-        <span>{{ chat.phone }}</span>
+        <span class="phone-number">{{ formatPhoneNumber }}</span>
+        <span class="whatsapp-name">{{ chat.whatsapp_name }}</span>
       </div>
       <div class="card-body">
-        <span>{{ formattedLastMessageAt }}</span>
+        <span class="last-message-time">00:00</span>
+        <span class="last-message-date">{{ chat.last_message_at }}</span>
       </div>
-      <div class="status-indicator tooltip" :class="statusClass"><span class="tooltiptext">{{ chat.status_name }}</span></div>
+      <div class="status-indicator tooltip" :class="statusClass">
+        <span class="tooltiptext">{{ chat.status_name }}</span>
+      </div>
     </div>
   </template>
   
   <script>
+  import { AsYouType } from 'libphonenumber-js';
+  
   export default {
     props: {
       chat: {
@@ -18,17 +24,11 @@
         required: true,
       },
     },
-    created() {
-        console.log(this.chat)
-    },
     computed: {
-      formattedLastMessageAt() {
-        // Formatea la fecha del último mensaje
-        const options = { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' };
-        return new Date(this.chat.last_message_at).toLocaleString('es-ES', options);
+      formatPhoneNumber() {
+        return new AsYouType(this.chat.country).input('+' + this.chat.phone);
       },
       statusClass() {
-        // Devuelve una clase basada en el estado
         return `status-${this.chat.status}`;
       },
     },
@@ -38,8 +38,8 @@
   <style scoped>
   .chat-card {
     display: flex;
+    flex-direction: column;
     justify-content: space-between;
-    align-items: center;
     padding: 1em;
     margin: 0.5em 0;
     border: 1px solid #444;
@@ -47,23 +47,38 @@
     background-color: #444444;
     color: #fff;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    position: relative;
   }
-
-.chat-card:hover {
-    background-color: #2a2a2a;
-}
-
   
-  .card-header {
-    font-size: 1.2em;
+  .chat-card:hover {
+    background-color: #2a2a2a;
+  }
+  
+  .card-header, .card-body {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+  }
+  
+  .phone-number, .whatsapp-name, .last-message-time, .last-message-date {
+    font-size: 1em;
     font-weight: bold;
   }
   
-  .card-body {
-    font-size: 1em;
+  .phone-number, .last-message-time {
+    text-align: left;
+  }
+  
+  .whatsapp-name, .last-message-date {
+    text-align: right;
+    margin-right: 50px; /* Añade margen para evitar colisión con el círculo */
   }
   
   .status-indicator {
+    position: absolute;
+    right: 1em;
+    top: 50%;
+    transform: translateY(-50%);
     width: 20px;
     height: 20px;
     border-radius: 50%;
@@ -71,19 +86,18 @@
   }
   
   .status-1 {
-    background-color: #9e5a2d; 
+    background-color: #9e5a2d;
   }
   
   .status-2 {
-    background-color: #00ff00; 
+    background-color: #00ff00;
   }
   
   .status-3 {
-    background-color: #ff0000; 
+    background-color: #ff0000;
   }
-
+  
   .tooltip {
-    position: relative;
     display: inline-block;
     border-bottom: 1px dotted black;
   }
@@ -120,6 +134,5 @@
     visibility: visible;
     opacity: 1;
   }
-
   </style>
   

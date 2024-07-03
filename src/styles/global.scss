@@ -1,6 +1,6 @@
 button {
   padding: 1em;
-  border: none;
+  // border: none;
   border-radius: 5px;
   background-color: #FFD700;
   color: black;
@@ -11,8 +11,10 @@ button {
 
 button:hover {
   background-color: #ffc107;
+  border-color: #ffe188;
 }
 
 button:focus {
   outline: none;
+  border-color: #ffe188;
 }

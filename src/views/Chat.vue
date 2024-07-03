@@ -2,7 +2,7 @@
   <ViewTitle title="Chats"/>
     <div class="chat-container">
       <div class="sidebar">
-        <ChatCardList :chat_list="chat_list"/>
+        <ChatCardList @selected="selectedChat" :chat_list="chat_list"/>
       </div>
       <div class="main-chat">
         <!-- Contenido de la columna 2/3 -->
@@ -31,6 +31,11 @@ import {chats} from '@/routes/chats';
 
     async created() {
       this.chat_list = await chats();
+    },
+    methods : {
+      selectedChat(id) {
+        console.log(id)
+      }
     }
 
   };
@@ -51,7 +56,7 @@ import {chats} from '@/routes/chats';
 }
 
 .main-chat {
-  flex: 2;
+  flex: 4;
   background-color: #2f2e2e; /* Color de fondo aún más oscuro */
   padding: 10px;
   box-sizing: border-box;
