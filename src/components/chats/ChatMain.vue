@@ -22,6 +22,7 @@
 <script>
 import {chat_messages, send_message} from '@/routes/chats';
 import Message from './Message.vue';
+// import io from 'socket.io-client';
 
 export default {
   name: "ChatMain",
@@ -49,8 +50,25 @@ export default {
       more_messages : true,
       last_timestamp : null,
       new_message: '',
+      socket: null,
 
     };
+  },
+  mounted() {
+    // this.socket = io(process.env.VUE_APP_API_BASE_URL);
+    // this.socket.on('message', (data) => {
+    //   console.log(data);
+    //   // this.messages.push(data.message);
+    // });
+    // this.socket.on('recieve-message', (message) => {
+    //   console.log(message);
+    //   // this.messages.push(data.message);
+    // });
+   
+  },  
+  beforeUnmount() {
+  //   if(this.socket)
+  //     this.socket.close();
   },
   methods: {
     async sendMessage() {
@@ -61,11 +79,14 @@ export default {
             type:'text',
             message:this.new_message,
           }
+          this.new_message = '';
           let response = await send_message(message_data);
           
           this.messages.push(response.message)
-          this.new_message = '';
 
+          this.$nextTick(() => {
+            this.scrollToBottom();
+          });
           
         } catch(error) {
           console.error(error);

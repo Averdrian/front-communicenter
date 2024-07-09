@@ -14,7 +14,8 @@ import axiosInstance from "../axios"
 
 
     export function chat_messages(chat_id, timestamp=null) {
-        let response = axiosInstance.get(`/messages/${chat_id}${timestamp != null ? '/'+timestamp : ''}`)
+        if(timestamp != null && Number.isInteger(timestamp)) timestamp = timestamp.toFixed(1)
+        let response = axiosInstance.get(`/messages/${chat_id}${timestamp != null ? '/'+ timestamp : ''}`)
             .then(response => {
                 return response.data;
             })
