@@ -1,6 +1,6 @@
 <template>
     <div class="chat-list">
-      <ChatCard @click="select_chat(n.id)" v-for="n in chat_list" :chat="n" :key="n" />
+      <ChatCard @click="select_chat(n)" v-for="n in chat_list" :chat="n" :key="n" />
     </div>
   </template>
   
@@ -15,8 +15,8 @@
     props: ['chat_list'],
 
     methods : {
-        select_chat(id) {
-            this.$emit('selected', id);
+        select_chat(chat) {
+            this.$emit('selected', chat);
         }
     }
   

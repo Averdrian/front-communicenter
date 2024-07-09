@@ -5,7 +5,7 @@
         <ChatCardList @selected="selectedChat" :chat_list="chat_list"/>
       </div>
       <div class="main-chat">
-        <!-- Contenido de la columna 2/3 -->
+        <ChatMain :chat="selected_chat"/>
       </div>
     </div>
   </template>
@@ -14,18 +14,22 @@
 
 import ViewTitle from '@/components/ViewTitle.vue';
 import ChatCardList from '@/components/chats/ChatCardList.vue';
+import ChatMain from '@/components/chats/ChatMain.vue'
 import {chats} from '@/routes/chats';
+
 
   export default {
     name: 'chat',
     components : {
       ViewTitle,
-      ChatCardList
+      ChatCardList,
+      ChatMain
     },
 
     data() {
       return {
-        chat_list : []
+        chat_list : [],
+        selected_chat : null
       }
     },
 
@@ -33,8 +37,8 @@ import {chats} from '@/routes/chats';
       this.chat_list = await chats();
     },
     methods : {
-      selectedChat(id) {
-        console.log(id)
+      selectedChat(chat) {
+        this.selected_chat = chat;
       }
     }
 
