@@ -1,5 +1,6 @@
 import { createStore } from 'vuex';
 import {login, logout} from './routes/auth';
+import VuexPersistence from 'vuex-persist';
 
 const auth = createStore({
   state: {
@@ -29,7 +30,12 @@ const auth = createStore({
   getters: {
     isAuthenticated: state => state.isAuthenticated,
     user: state => state.user,
-  }
+  },
+  plugins: [
+    new VuexPersistence({
+      storage: window.localStorage
+    }).plugin
+  ]
 });
 
 export default auth;
