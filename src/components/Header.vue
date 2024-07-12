@@ -5,7 +5,7 @@
       <!-- <img class="logo" src="logo.png" alt="Logo" /> -->
     </div>
     <div class="menu">
-      <button v-if="isAuthenticated" @click="goToProfile">Perfil</button>
+      <button v-if="isAuthenticated" @click="goToChat">Chat</button>
       <button v-if="isAuthenticated" @click="handleLogout">Logout</button>
       <button v-else @click="goToLogin">Login</button>
     </div>
@@ -21,8 +21,8 @@ export default {
   },
   methods: {
     ...mapActions(['logout']),
-    goToProfile() {
-      this.$router.push({ name: 'profile' });
+    goToChat() {
+      this.$router.push({ name: 'chat' });
     },
     goToLogin() {
       this.$router.push({ name: 'login' });

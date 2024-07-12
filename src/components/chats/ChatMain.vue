@@ -22,7 +22,7 @@
 <script>
 import {chat_messages, send_message} from '@/routes/chats';
 import Message from './Message.vue';
-// import io from 'socket.io-client';
+
 
 export default {
   name: "ChatMain",
@@ -30,18 +30,10 @@ export default {
     Message,
   },
   props: ['chat'],
+ 
   watch: { 
-    chat: async function(newChat) { 
-      let response = await chat_messages(newChat.id);
-      this.messages = response.messages.reverse();
-      this.more_messages = response.more_messages;
-      this.last_timestamp = response.last_timestamp;
-      this.new_message = '';
-
-      this.$nextTick(() => {
-        this.scrollToBottom();
-      });
-
+    chat: async function(new_chat) { 
+      this.newChat(new_chat.id);
     }
   },
   data() {
@@ -50,27 +42,28 @@ export default {
       more_messages : true,
       last_timestamp : null,
       new_message: '',
-      socket: null,
-
     };
   },
-  mounted() {
-    // this.socket = io(process.env.VUE_APP_API_BASE_URL);
-    // this.socket.on('message', (data) => {
-    //   console.log(data);
-    //   // this.messages.push(data.message);
-    // });
-    // this.socket.on('recieve-message', (message) => {
-    //   console.log(message);
-    //   // this.messages.push(data.message);
-    // });
-   
-  },  
-  beforeUnmount() {
-  //   if(this.socket)
-  //     this.socket.close();
+
+  created() {
+    this.newChat(this.chat.id);
   },
+  
   methods: {
+
+
+    async newChat(chat_id) {
+      let response = await chat_messages(chat_id);
+      this.messages = response.messages.reverse();
+      this.more_messages = response.more_messages;
+      this.last_timestamp = response.last_timestamp;
+      this.new_message = '';
+
+      this.$nextTick(() => {
+        this.scrollToBottom();
+      });
+    },
+
     async sendMessage() {
       if (this.new_message.trim() !== '') {
         try {
@@ -94,6 +87,19 @@ export default {
       }
     },
 
+    receiveMessage(message) {
+      console.log("mensaje")
+      let toScroll = this.isBottomScrolled();
+      this.messages.push(message);
+
+      if(toScroll) { 
+        this.$nextTick(() => {
+            this.scrollToBottom();
+          });
+      }
+      
+    },
+
     async loadMessages() {
 
       let response = await chat_messages(this.chat.id, this.last_timestamp);
@@ -102,6 +108,11 @@ export default {
       this.last_timestamp = response.last_timestamp;
       this.new_message = '';
       
+    },
+
+    isBottomScrolled() {
+      let messagesList = document.getElementById('messages-list');
+      return messagesList.scrollTop == messagesList.scrollHeight - messagesList.clientHeight;
     },
 
     scrollToBottom() {
