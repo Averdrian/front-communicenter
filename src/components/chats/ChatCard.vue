@@ -82,7 +82,7 @@
     width: 20px;
     height: 20px;
     border-radius: 50%;
-    background-color: #ccc; /* Color genérico, cámbialo según el estado */
+    background-color: #ccc;
   }
   
   .status-1 {
@@ -90,13 +90,29 @@
   }
   
   .status-2 {
-    background-color: #00ff00;
+    background-color: #000000;
   }
   
   .status-3 {
     background-color: #ff0000;
   }
   
+  .status-4 {
+    background-color: #d6b211;
+  }
+
+  .status-5 {
+    background-color: #51ff00;
+  }
+
+  .status-6 {
+    background-color: #51ff00;
+  }
+
+  .status-7 {
+    background-color: #ff8800;
+  }
+
   .tooltip {
     display: inline-block;
     border-bottom: 1px dotted black;

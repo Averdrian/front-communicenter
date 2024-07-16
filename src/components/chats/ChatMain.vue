@@ -75,7 +75,9 @@ export default {
           this.new_message = '';
           let response = await send_message(message_data);
           
-          this.messages.push(response.message)
+          this.messages.push(response.message);
+
+          this.$emit('sended_message', response.message);
 
           this.$nextTick(() => {
             this.scrollToBottom();
@@ -88,7 +90,6 @@ export default {
     },
 
     receiveMessage(message) {
-      console.log("mensaje")
       let toScroll = this.isBottomScrolled();
       this.messages.push(message);
 

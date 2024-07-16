@@ -2,10 +2,10 @@
   <ViewTitle title="Chats"/>
     <div class="chat-container">
       <div class="sidebar">
-        <ChatCardList @selected="selectedChat" :chat_list="chat_list"/>
+        <ChatCardList @selected="selectedChat" :chat_list="chat_list" ref="chat_card_list"/>
       </div>
       <div class="main-chat">
-        <ChatMain v-if="selected_chat" :chat="selected_chat" ref="chat_main"/>
+        <ChatMain v-if="selected_chat" :chat="selected_chat" @sended_message="sended_message" ref="chat_main"/>
       </div>
     </div>
   </template>
@@ -40,7 +40,6 @@ import { mapGetters } from 'vuex';
     },
 
     async created() {
-
       this.chat_list = await chats();
     },
     async mounted() {
@@ -49,8 +48,9 @@ import { mapGetters } from 'vuex';
     this.socket.on('receive-message-'+this.user.organization_id, (message) => {
       if(this.selected_chat?.id === message.chat_id) {
         this.$refs.chat_main.receiveMessage(message);
-
       }
+      console.log(message)
+      this.receiveMessage(message.chat_id, message.new_chat_status, message.new_chat_status_name);
 
 
     });
@@ -63,7 +63,29 @@ import { mapGetters } from 'vuex';
     methods : {
       selectedChat(chat) {
         this.selected_chat = chat;
-      }
+      },
+
+      sended_message(message) {
+        this.receiveMessage(message.chat_id, message.new_chat_status,message.new_chat_status_name);
+      },
+      receiveMessage(chat_id, new_status, new_status_name) {
+
+          const index = this.chat_list.findIndex(chat => chat.id === chat_id);
+          if(index == -1) {
+            console.log(new_status)
+            //TODO: coger el chat cuando no esta en la lista
+            //TODO: Cambiar la paginacion de los chats, paginar no por paginas sino por last_message_at
+          }
+
+          else {
+            const [chat] = this.chat_list.splice(index, 1);
+            chat.status = new_status;
+            chat.status_name = new_status_name;
+            this.chat_list.unshift(chat);
+          }
+
+
+        }
     }
 
   };

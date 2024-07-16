@@ -5,7 +5,7 @@
   </template>
   
   <script>
-  import ChatCard from './ChatCard.vue';
+import ChatCard from './ChatCard.vue';
   
   export default {
     name: 'ChatCardList',
@@ -17,7 +17,8 @@
     methods : {
         select_chat(chat) {
             this.$emit('selected', chat);
-        }
+        },
+
     }
   
 };
