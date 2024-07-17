@@ -14,15 +14,22 @@
         @keyup.enter="sendMessage"
         placeholder="Escribe un mensaje..."
       />
+      <label class="file-input-label">
+        <i class="fa-solid fa-paperclip"></i>
+        <input 
+          type="file" 
+          ref="fileInput"
+          @change="handleFileChange"
+        />
+      </label>
       <button @click="sendMessage">Enviar</button>
     </div>
   </div>
 </template>
 
 <script>
-import {chat_messages, send_message} from '@/routes/chats';
+import { chat_messages, send_message } from '@/routes/chats';
 import Message from './Message.vue';
-
 
 export default {
   name: "ChatMain",
@@ -30,7 +37,6 @@ export default {
     Message,
   },
   props: ['chat'],
- 
   watch: { 
     chat: async function(new_chat) { 
       this.newChat(new_chat.id);
@@ -39,9 +45,10 @@ export default {
   data() {
     return {
       messages: [],
-      more_messages : true,
-      last_timestamp : null,
+      more_messages: true,
+      last_timestamp: null,
       new_message: '',
+      selectedFile: null,
     };
   },
 
@@ -50,8 +57,6 @@ export default {
   },
   
   methods: {
-
-
     async newChat(chat_id) {
       let response = await chat_messages(chat_id);
       this.messages = response.messages.reverse();
@@ -65,50 +70,64 @@ export default {
     },
 
     async sendMessage() {
-      if (this.new_message.trim() !== '') {
+      if (this.new_message.trim() !== '' || this.selectedFile) {
         try {
-          const message_data = {
-            chat_id:this.chat.id,
-            type:'text',
-            message:this.new_message,
+          const formData = new FormData();
+          formData.append('chat_id', this.chat.id);
+
+          if (this.selectedFile) {
+            formData.append('media', this.selectedFile);
+
+            // Determine the type based on the file type
+            let fileType = this.selectedFile.type.split('/')[0];
+            if(fileType == 'application') fileType = 'document';
+            formData.append('type', fileType); // This can be 'image', 'video', 'application' (for documents), etc.
+          } else {
+            formData.append('type', 'text');
           }
+
+          formData.append('message', this.new_message);
+
           this.new_message = '';
-          let response = await send_message(message_data);
+          this.selectedFile = null;
+          this.$refs.fileInput.value = '';
+
+          let response = await send_message(formData);
           
           this.messages.push(response.message);
-
           this.$emit('sended_message', response.message);
 
           this.$nextTick(() => {
             this.scrollToBottom();
           });
           
-        } catch(error) {
+        } catch (error) {
           console.error(error);
         }
       }
+    },
+
+    handleFileChange(event) {
+      this.selectedFile = event.target.files[0];
     },
 
     receiveMessage(message) {
       let toScroll = this.isBottomScrolled();
       this.messages.push(message);
 
-      if(toScroll) { 
+      if (toScroll) { 
         this.$nextTick(() => {
-            this.scrollToBottom();
-          });
+          this.scrollToBottom();
+        });
       }
-      
     },
 
     async loadMessages() {
-
       let response = await chat_messages(this.chat.id, this.last_timestamp);
       this.messages = response.messages.reverse().concat(this.messages);
       this.more_messages = response.more_messages;
       this.last_timestamp = response.last_timestamp;
       this.new_message = '';
-      
     },
 
     isBottomScrolled() {
@@ -119,22 +138,20 @@ export default {
     scrollToBottom() {
       let messagesList = document.getElementById('messages-list');
       messagesList.scrollTop = messagesList.scrollHeight;
-
     },
+
     async handleScroll() {
       const messagesList = document.getElementById('messages-list');
       if (messagesList.scrollTop === 0 && this.more_messages) {
-        const messagesList = document.getElementById('messages-list');
         const currentScrollHeight = messagesList.scrollHeight;
         const currentScrollTop = messagesList.scrollTop;
         
         await this.loadMessages();     
         
         this.$nextTick(() => {
-        const newScrollHeight = messagesList.scrollHeight;
-        messagesList.scrollTop = newScrollHeight - currentScrollHeight + currentScrollTop;
-      });
-        // Aquí puedes hacer la llamada para cargar más mensajes
+          const newScrollHeight = messagesList.scrollHeight;
+          messagesList.scrollTop = newScrollHeight - currentScrollHeight + currentScrollTop;
+        });
       }
     }
   }
@@ -165,7 +182,7 @@ export default {
   border-top: 1px solid #333;
 }
 
-.message-input input {
+.message-input input[type="text"] {
   flex: 1;
   padding: 10px;
   border: none;
@@ -186,5 +203,20 @@ export default {
 
 .message-input button:hover {
   background-color: #4b4b4b;
+}
+
+.file-input-label {
+  display: inline-block;
+  cursor: pointer;
+  margin-right: 10px;
+  color: #ddd;
+}
+
+.file-input-label input[type="file"] {
+  display: none;
+}
+
+.file-input-label i {
+  font-size: 1.2rem;
 }
 </style>
