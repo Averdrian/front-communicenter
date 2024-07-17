@@ -84,13 +84,17 @@
     border-radius: 50%;
     background-color: #ccc;
   }
-  
-  .status-1 {
+
+  .status-0 {
     background-color: #9e5a2d;
   }
   
-  .status-2 {
+  .status-1 {
     background-color: #000000;
+  }
+  
+  .status-2 {
+    background-color: #09f0f8;
   }
   
   .status-3 {
@@ -106,7 +110,7 @@
   }
 
   .status-6 {
-    background-color: #51ff00;
+    background-color: #174900;
   }
 
   .status-7 {
