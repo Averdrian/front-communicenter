@@ -1,6 +1,8 @@
 <template>
   <div class="chat-main">
     <div class="messages-list" id="messages-list" @scroll="handleScroll">
+      <!-- <div v-if="loading" class="loader"></div> -->
+
       <Message 
         v-for="message in messages" 
         :key="message.id" 
@@ -29,6 +31,7 @@
 
 <script>
 import { chat_messages, send_message } from '@/routes/chats';
+import { get_message } from '@/routes/messages';
 import Message from './Message.vue';
 
 export default {
@@ -49,6 +52,7 @@ export default {
       last_timestamp: null,
       new_message: '',
       selectedFile: null,
+      loading : false,
     };
   },
 
@@ -58,15 +62,27 @@ export default {
   
   methods: {
     async newChat(chat_id) {
-      let response = await chat_messages(chat_id);
-      this.messages = response.messages.reverse();
-      this.more_messages = response.more_messages;
-      this.last_timestamp = response.last_timestamp;
-      this.new_message = '';
+      try {
 
-      this.$nextTick(() => {
-        this.scrollToBottom();
-      });
+        this.loading = true;
+        
+        let response = await chat_messages(chat_id);
+        
+        this.messages = response.messages.reverse();
+        
+        this.more_messages = response.more_messages;
+        this.last_timestamp = response.last_timestamp;
+        this.new_message = '';
+        
+        
+      } catch(error) {
+        alert(error)
+      } finally {
+        this.loading = false;
+        this.$nextTick(() => {
+          this.scrollToBottom();
+        });
+      }
     },
 
     async sendMessage() {
@@ -111,7 +127,9 @@ export default {
       this.selectedFile = event.target.files[0];
     },
 
-    receiveMessage(message) {
+    async receiveMessage(message_id) {
+      let message = await get_message(message_id);
+
       let toScroll = this.isBottomScrolled();
       this.messages.push(message);
 
@@ -123,11 +141,19 @@ export default {
     },
 
     async loadMessages() {
-      let response = await chat_messages(this.chat.id, this.last_timestamp);
-      this.messages = response.messages.reverse().concat(this.messages);
-      this.more_messages = response.more_messages;
-      this.last_timestamp = response.last_timestamp;
-      this.new_message = '';
+      try{
+        this.loading = true;
+        let response = await chat_messages(this.chat.id, this.last_timestamp);
+        this.messages = response.messages.reverse().concat(this.messages);
+        this.more_messages = response.more_messages;
+        this.last_timestamp = response.last_timestamp;
+        this.new_message = '';
+      } catch(error) {
+        alert(error)
+      } finally {
+        this.loading = false;
+      }
+     
     },
 
     isBottomScrolled() {
@@ -219,4 +245,26 @@ export default {
 .file-input-label i {
   font-size: 1.2rem;
 }
+
+
+.loader {
+  display: inline-block;
+  width: 45px;
+  aspect-ratio: 1;
+  --c: no-repeat linear-gradient(#dafc5f 0 0);
+  background: 
+    var(--c) 0%   50%,
+    var(--c) 50%  50%,
+    var(--c) 100% 50%;
+  background-size: 20% 100%;
+  animation: l1 1s infinite linear;
+}
+@keyframes l1 {
+  0%  {background-size: 20% 100%,20% 100%,20% 100%}
+  33% {background-size: 20% 10% ,20% 100%,20% 100%}
+  50% {background-size: 20% 100%,20% 10% ,20% 100%}
+  66% {background-size: 20% 100%,20% 100%,20% 10% }
+  100%{background-size: 20% 100%,20% 100%,20% 100%}
+}
+
 </style>

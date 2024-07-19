@@ -2,6 +2,12 @@
     <div class="message" :class="{ 'from-user': message.user_id }">
       <p class="message-user">{{ message.user_id ? message.user_name  : ''}}</p>
       <div class="message-bubble">
+        <div v-if="message.media" >
+           <img v-if="['IMAGE', 'STICKER'].includes(message.type)" class="media-video-image" :src="`data:${message.media.mime_type};base64,${message.media.content}`">
+           <video v-if="message.type == 'VIDEO'" class="media-video-image" :src="`data:${message.media.mime_type};base64,${message.media.content}`" controls></video>
+           <audio v-if="message.type == 'AUDIO'" class="media-audio" :src="`data:${message.media.mime_type};base64,${message.media.content}`" controls></audio>
+
+        </div>
         <p class="message-text">{{ message.message }}</p>
         <p class="message-time">{{ message.sent_at }}</p>
       </div>
@@ -13,7 +19,7 @@
     name: 'Message',
     props: {
       message: Object,
-    },
+    }
   };
   </script>
   
@@ -80,6 +86,16 @@
     font-size: 0.8em;
     color: #888;
     text-align: right;
+  }
+
+  .media-video-image {
+
+    height: 25vh;
+    max-width: 40ch;
+  }
+
+  .media-audio {
+    max-width: 40ch;
   }
   </style>
   

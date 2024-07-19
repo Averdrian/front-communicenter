@@ -6,6 +6,7 @@
       </div>
       <div class="main-chat">
         <ChatMain v-if="selected_chat" :chat="selected_chat" @sended_message="sended_message" ref="chat_main"/>
+        
       </div>
     </div>
   </template>
@@ -47,9 +48,9 @@ import { mapGetters } from 'vuex';
 
     this.socket.on('receive-message-'+this.user.organization_id, (message) => {
       if(this.selected_chat?.id === message.chat_id) {
-        this.$refs.chat_main.receiveMessage(message);
+        this.$refs.chat_main.receiveMessage(message.id);
       }
-      console.log(message)
+      
       this.receiveMessage(message.chat_id, message.new_chat_status, message.new_chat_status_name);
 
 
