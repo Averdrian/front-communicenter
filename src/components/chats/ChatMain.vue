@@ -1,7 +1,7 @@
 <template>
   <div class="chat-main">
     <div class="messages-list" id="messages-list" @scroll="handleScroll">
-      <!-- <div v-if="loading" class="loader"></div> -->
+      <div v-if="loading" class="loader"></div>
 
       <Message 
         v-for="message in messages" 
