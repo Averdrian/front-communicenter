@@ -6,7 +6,11 @@
         <div v-if="['IMAGE', 'STICKER', 'VIDEO', 'DOCUMENT'].includes(message.type)" class="document-container">
           <img v-if="['IMAGE', 'STICKER'].includes(message.type)" class="media-video-image" :src="`data:${message.media.mime_type};base64,${message.media.content}`">
           <video v-if="message.type === 'VIDEO'" class="media-video-image" :src="`data:${message.media.mime_type};base64,${message.media.content}`" controls></video>
-          <iframe v-if="message.type === 'DOCUMENT'" class="media-document" :src="`data:${message.media.mime_type};base64,${message.media.content}`"></iframe>
+          <div v-if="message.type === 'DOCUMENT'" class="document-content">
+            <iframe v-if="['application/pdf'].includes(message.media.mime_type)" class="media-document" :src="`data:${message.media.mime_type};base64,${message.media.content}`"></iframe>
+            <i v-else class="fa fa-file" style="font-size: 5em;"></i> <!-- Ícono genérico para otros tipos de documentos -->
+            <p>{{ getFileTypeDescription(message.media.mime_type) }}</p>
+          </div>
           <button @click="downloadDocument" class="download-button"><i class="fa-regular fa-circle-down"></i></button> 
         </div>
         <audio v-if="message.type === 'AUDIO'" class="media-audio" :src="`data:${message.media.mime_type};base64,${message.media.content}`" controls></audio>
@@ -43,6 +47,17 @@ export default {
       downloadLink.download = fileName;
       downloadLink.click();
       URL.revokeObjectURL(blobUrl); // Liberar el objeto URL después de usarlo
+    },
+    getFileTypeDescription(mimeType) {
+      const mimeTypesMap = {
+        'application/zip': 'Archivo ZIP',
+        'application/vnd.openxmlformats-officedocument.wordprocessingml.document': 'Documento Word',
+        'application/msword': 'Documento Word',
+        'application/vnd.ms-excel': 'Documento Excel',
+        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': 'Documento Excel',
+        'application/pdf': 'Documento PDF',
+      };
+      return mimeTypesMap[mimeType] || 'Documento';
     }
   }
 };
@@ -149,6 +164,7 @@ export default {
   background-color: rgba(0, 0, 0, 0.26);
   width: 18%;
   height: 18%;
+  min-height: 50px;
 }
 
 .download-button:hover {
