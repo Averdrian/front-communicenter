@@ -1,6 +1,6 @@
 <template>
   <div class="message" :class="{ 'from-user': message.user_id }">
-    <p class="message-user">{{ message.user_id ? message.user_name : '' }}</p>
+    <p class="message-user" v-if="message.user_id && previous_user_id !== message.user_id">{{ message.user_id ? message.user_name : '' }}</p>
     <div class="message-bubble">
       <div v-if="message.media">
         <div v-if="['IMAGE', 'STICKER', 'VIDEO', 'DOCUMENT'].includes(message.type)" class="document-container">
@@ -22,6 +22,7 @@ export default {
   name: 'Message',
   props: {
     message: Object,
+    previous_user_id: Number
   },
   methods: {
     downloadDocument() {
@@ -71,21 +72,13 @@ export default {
   border-radius: 15px;
   background-color: #2a2a2a;
   color: #ddd;
-  position: relative;
   word-wrap: break-word;
-}
-
-.message-bubble::after {
-  content: '';
-  position: absolute;
-  top: 10px;
-  width: 0;
-  height: 0;
-  border: 10px solid transparent;
+  min-width: 20%;
 }
 
 .from-user .message-bubble {
-  background-color: #4a4a4a;
+  background-color: #FFD700;
+  color: black;
 }
 
 .from-user .message-bubble::after {
@@ -100,21 +93,29 @@ export default {
   border-right-color: #2a2a2a;
   border-left: 0;
   margin-top: -10px;
+  min-width: 20%;
 }
 
 .message-text {
   margin: 0;
+  text-align: left;
 }
 
 .message-time {
   font-size: 0.8em;
   color: #888;
-  text-align: right;
+  text-align: left;
+  margin-bottom: 0.2em;
 }
+
+.from-user .message-time {
+  color: black
+} 
 
 .media-video-image {
   height: 25vh;
   max-width: 40ch;
+  min-width: 30ch;
 }
 
 .media-audio {

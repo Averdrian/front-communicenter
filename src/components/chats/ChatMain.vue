@@ -4,9 +4,10 @@
       <div v-if="loading" class="loader"></div>
 
       <Message 
-        v-for="message in messages" 
+        v-for="(message, idx) in messages" 
         :key="message.id" 
         :message="message"
+        :previous_user_id="getPreviousMessageUserId(idx)"
       />
     </div>
     <div class="message-input">
@@ -179,6 +180,12 @@ export default {
           messagesList.scrollTop = newScrollHeight - currentScrollHeight + currentScrollTop;
         });
       }
+    },
+    getPreviousMessageUserId(index) {
+      if (index > 0) {
+        return this.messages[index - 1].user_id;
+      }
+      return null;
     }
   }
 };
