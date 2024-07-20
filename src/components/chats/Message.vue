@@ -1,7 +1,7 @@
 <template>
   <div class="message" :class="{ 'from-user': message.user_id }">
     <p class="message-user" v-if="message.user_id && previous_user_id !== message.user_id">{{ message.user_id ? message.user_name : '' }}</p>
-    <div class="message-bubble">
+    <div class="message-bubble" :class="message.user_id == user.id ? 'message-self' : 'message-mate'">
       <div v-if="message.media">
         <div v-if="['IMAGE', 'STICKER', 'VIDEO', 'DOCUMENT'].includes(message.type)" class="document-container">
           <img v-if="['IMAGE', 'STICKER'].includes(message.type)" class="media-video-image" :src="`data:${message.media.mime_type};base64,${message.media.content}`">
@@ -22,12 +22,21 @@
 </template>
 
 <script>
+
+import { mapGetters } from 'vuex';
+
+
 export default {
   name: 'Message',
   props: {
     message: Object,
     previous_user_id: Number
   },
+
+  computed: {
+    ...mapGetters(['user']),
+  },
+
   methods: {
     downloadDocument() {
       // const linkSource = `data:${this.message.media.mime_type};base64,${this.message.media.content}`;
@@ -92,13 +101,22 @@ export default {
 }
 
 .from-user .message-bubble {
-  background-color: #FFD700;
+  
   color: black;
+}
+
+
+.message-self {
+  background-color: #FFD700;
+}
+
+.from-user .message-mate {
+  background-color: #48C9B0;
 }
 
 .from-user .message-bubble::after {
   right: -20px;
-  border-left-color: #4a4a4a;
+  border-left-color: #4a4a4a; 
   border-right: 0;
   margin-top: -10px;
 }
@@ -177,4 +195,5 @@ export default {
   opacity: 1;
   backdrop-filter: blur(50px); /* Borroso el fondo */
 }
+
 </style>
