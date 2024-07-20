@@ -1,6 +1,6 @@
 <template>
   <div class="message" :class="{ 'from-user': message.user_id }">
-    <p class="message-user" v-if="message.user_id && previous_user_id !== message.user_id">{{ message.user_id ? message.user_name : '' }}</p>
+    <p class="message-user" :class="message.user_id == user.id ? 'message-user-self' : 'message-user-mate'" v-if="message.user_id && previous_user_id !== message.user_id">{{ message.user_id ? message.user_name : '' }}</p>
     <div class="message-bubble" :class="message.user_id == user.id ? 'message-self' : 'message-mate'">
       <div v-if="message.media">
         <div v-if="['IMAGE', 'STICKER', 'VIDEO', 'DOCUMENT'].includes(message.type)" class="document-container">
@@ -8,7 +8,7 @@
           <video v-if="message.type === 'VIDEO'" class="media-video-image" :src="`data:${message.media.mime_type};base64,${message.media.content}`" controls></video>
           <div v-if="message.type === 'DOCUMENT'" class="document-content">
             <iframe v-if="['application/pdf'].includes(message.media.mime_type)" class="media-document" :src="`data:${message.media.mime_type};base64,${message.media.content}`"></iframe>
-            <i v-else class="fa fa-file" style="font-size: 5em;"></i> <!-- Ícono genérico para otros tipos de documentos -->
+            <i v-else class="fa fa-file" style="font-size: 5em;"></i>
             <p>{{ getFileTypeDescription(message.media.mime_type) }}</p>
           </div>
           <button @click="downloadDocument" class="download-button"><i class="fa-regular fa-circle-down"></i></button> 
@@ -90,6 +90,20 @@ export default {
   color: #888;
 }
 
+.message-user-self {
+  color: #FFEB3B;
+}
+
+.message-user-mate {
+  color: #48C9B0;
+}
+
+
+
+.message-mate .message-user {
+  color: #48C9B0;
+}
+
 .message-bubble {
   max-width: 70%;
   padding: 10px;
@@ -107,7 +121,7 @@ export default {
 
 
 .message-self {
-  background-color: #FFD700;
+  background-color: #FFEB3B;
 }
 
 .from-user .message-mate {

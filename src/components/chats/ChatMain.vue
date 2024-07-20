@@ -196,7 +196,7 @@ export default {
   display: flex;
   flex-direction: column;
   height: 100%;
-  background-color: #121212;
+  background-color: #1E1E1E;
   padding: 10px;
   box-sizing: border-box;
 }

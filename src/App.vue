@@ -51,5 +51,32 @@ body {
   height: 90vh !important;
 }
 
+/* Personalización del scrollbar para navegadores basados en WebKit (Chrome, Safari) */
+::-webkit-scrollbar {
+  width: 12px; /* Ancho del scrollbar vertical */
+  height: 12px; /* Alto del scrollbar horizontal */
+}
+
+::-webkit-scrollbar-track {
+  background: #2E2E2E; /* Color de fondo del track del scrollbar */
+  border-radius: 10px; /* Bordes redondeados del track */
+}
+
+::-webkit-scrollbar-thumb {
+  background: #FFC107; /* Color del thumb del scrollbar */
+  border-radius: 10px; /* Bordes redondeados del thumb */
+  border: 3px solid #2E2E2E; /* Espacio alrededor del thumb para dejar el track visible */
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #FFB300; /* Color del thumb del scrollbar al pasar el mouse */
+}
+
+/* Personalización del scrollbar para Firefox */
+* {
+  scrollbar-width:thin; /* Grosor del scrollbar */
+  scrollbar-color: #FFC107 #2E2E2E; /* Color del thumb y el track del scrollbar */
+}
+
 
 </style>  
