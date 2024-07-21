@@ -55,8 +55,9 @@ import { mapGetters } from 'vuex';
         if(this.selected_chat?.id === message.chat_id) {
           this.$refs.chat_main.receiveMessage(message.id);
         }  
+      console.log(message)
         
-      this.receiveMessage(message.chat_id, message.new_chat_status, message.new_chat_status_name);
+      this.receiveMessage(message.chat_id, message.new_chat_status, message.new_chat_status_name, message.new_expires_at);
 
 
     });
@@ -73,10 +74,10 @@ import { mapGetters } from 'vuex';
       },
 
       sendedMessage(message) {
-        this.receiveMessage(message.chat_id, message.new_chat_status,message.new_chat_status_name);
+        this.receiveMessage(message.chat_id, message.new_chat_status,message.new_chat_status_name, 0);
       },
 
-      receiveMessage(chat_id, new_status, new_status_name) {
+      receiveMessage(chat_id, new_status, new_status_name, new_expires_at) {
 
           const index = this.chat_list.findIndex(chat => chat.id === chat_id);
           if(index == -1) {
@@ -89,6 +90,12 @@ import { mapGetters } from 'vuex';
             const [chat] = this.chat_list.splice(index, 1);
             chat.status = new_status;
             chat.status_name = new_status_name;
+
+            if(new_expires_at){
+              chat.expires_at = new_expires_at;
+              this.updateTimeLeft(chat);
+            }
+
             this.chat_list.unshift(chat);
           }
 
@@ -98,13 +105,14 @@ import { mapGetters } from 'vuex';
       updateTimeLeft(chat) {
         const expiresAt = new Date(chat.expires_at).getTime();
         const now = new Date().getTime();
-        console.log(expiresAt, now)
+        console.log((expiresAt - now )/ 3600)
         chat.time_left = Math.max(0, Math.floor((expiresAt - now) / 1000));
       },
 
       updateTimers() {
         this.chat_list.forEach(chat => {
-          --chat.time_left;
+          if(chat.time_left > 0)
+            --chat.time_left;
         });
       }
 
