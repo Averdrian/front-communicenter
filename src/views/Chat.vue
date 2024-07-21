@@ -5,8 +5,7 @@
         <ChatCardList @selected="selectedChat" :chat_list="chat_list" ref="chat_card_list"/>
       </div>
       <div class="main-chat">
-        <ChatMain v-if="selected_chat" :chat="selected_chat" @sended_message="sended_message" ref="chat_main"/>
-        
+        <ChatMain v-if="selected_chat" :chat="selected_chat" @sended_message="sendedMessage" ref="chat_main"/>  
       </div>
     </div>
   </template>
@@ -36,21 +35,27 @@ import { mapGetters } from 'vuex';
       return {
         chat_list : [],
         selected_chat : null,
-        socket : null
+        socket : null,
+        interval_id : null
       }
     },
 
     async created() {
       this.chat_list = await chats();
+      this.chat_list.forEach(chat => {
+        this.updateTimeLeft(chat);
+      });
+      this.interval_id = setInterval(this.updateTimers, 1000);
+      
     },
     async mounted() {
-    this.socket = io(process.env.VUE_APP_API_BASE_URL);
+      this.socket = io(process.env.VUE_APP_API_BASE_URL);
 
-    this.socket.on('receive-message-'+this.user.organization_id, (message) => {
-      if(this.selected_chat?.id === message.chat_id) {
-        this.$refs.chat_main.receiveMessage(message.id);
-      }
-      
+      this.socket.on('receive-message-'+this.user.organization_id, (message) => {
+        if(this.selected_chat?.id === message.chat_id) {
+          this.$refs.chat_main.receiveMessage(message.id);
+        }  
+        
       this.receiveMessage(message.chat_id, message.new_chat_status, message.new_chat_status_name);
 
 
@@ -60,15 +65,17 @@ import { mapGetters } from 'vuex';
   beforeUnmount() {
     if(this.socket)
       this.socket.close();
-  },
+      clearInterval(this.interval_id);
+    },
     methods : {
       selectedChat(chat) {
         this.selected_chat = chat;
       },
 
-      sended_message(message) {
+      sendedMessage(message) {
         this.receiveMessage(message.chat_id, message.new_chat_status,message.new_chat_status_name);
       },
+
       receiveMessage(chat_id, new_status, new_status_name) {
 
           const index = this.chat_list.findIndex(chat => chat.id === chat_id);
@@ -86,7 +93,21 @@ import { mapGetters } from 'vuex';
           }
 
 
-        }
+      },
+
+      updateTimeLeft(chat) {
+        const expiresAt = new Date(chat.expires_at).getTime();
+        const now = new Date().getTime();
+        console.log(expiresAt, now)
+        chat.time_left = Math.max(0, Math.floor((expiresAt - now) / 1000));
+      },
+
+      updateTimers() {
+        this.chat_list.forEach(chat => {
+          --chat.time_left;
+        });
+      }
+
     }
 
   };
@@ -99,7 +120,7 @@ import { mapGetters } from 'vuex';
 }
 
 .sidebar {
-  flex: 1;
+  flex: 2;
   background-color: #1e1e1e; /* Color de fondo más oscuro */
   padding: 10px;
   box-sizing: border-box;
@@ -107,7 +128,7 @@ import { mapGetters } from 'vuex';
 }
 
 .main-chat {
-  flex: 4;
+  flex: 7;
   background-color: #2f2e2e; /* Color de fondo aún más oscuro */
   padding: 10px;
   box-sizing: border-box;

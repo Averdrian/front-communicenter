@@ -4,7 +4,7 @@
     <div class="message-bubble" :class="message.user_id == user.id ? 'message-self' : 'message-mate'">
       <div v-if="message.media">
         <div v-if="['IMAGE', 'STICKER', 'VIDEO', 'DOCUMENT'].includes(message.type)" class="document-container">
-          <img v-if="['IMAGE', 'STICKER'].includes(message.type)" class="media-video-image" :src="`data:${message.media.mime_type};base64,${message.media.content}`">
+          <img v-if="['IMAGE', 'STICKER'].includes(message.type)" class="media-video-image" :src="`data:${message.media.mime_type};base64,${message.media.content}`"  loop=infinite>
           <video v-if="message.type === 'VIDEO'" class="media-video-image" :src="`data:${message.media.mime_type};base64,${message.media.content}`" controls></video>
           <div v-if="message.type === 'DOCUMENT'" class="document-content">
             <iframe v-if="['application/pdf'].includes(message.media.mime_type)" class="media-document" :src="`data:${message.media.mime_type};base64,${message.media.content}`"></iframe>
@@ -41,7 +41,8 @@ export default {
     downloadDocument() {
       // const linkSource = `data:${this.message.media.mime_type};base64,${this.message.media.content}`;
       const downloadLink = document.createElement('a');
-      const fileName = this.message.media.filename;
+      // const fileName = this.message.media.filename;
+      const fileName = 'file';
 
       // Convertir la base64 a Blob y crear una URL de objeto
       const binary = atob(this.message.media.content);
@@ -66,7 +67,7 @@ export default {
         'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': 'Documento Excel',
         'application/pdf': 'Documento PDF',
       };
-      return mimeTypesMap[mimeType] || 'Documento';
+      return mimeTypesMap[mimeType] || `Documento ${mimeType.split('/')[1]}`;
     }
   }
 };

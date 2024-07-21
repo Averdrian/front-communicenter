@@ -5,7 +5,7 @@
         <span class="whatsapp-name">{{ chat.whatsapp_name }}</span>
       </div>
       <div class="card-body">
-        <span class="last-message-time">00:00</span>
+        <span class="last-message-time" :class="chat.time_left < 3600 ? 'little-time' : ''">{{ formatTime(chat.time_left) }} <i class="fa-solid fa-clock"></i></span>
         <span class="last-message-date">{{ chat.last_message_at }}</span>
       </div>
       <div class="status-indicator tooltip" :class="statusClass">
@@ -32,6 +32,19 @@
         return `status-${this.chat.status}`;
       },
     },
+
+    methods : {
+      formatTime(seconds) {
+        const minutes = Math.floor(seconds / 60);
+        const hours = Math.floor(minutes / 60);
+        const remainingMinutes = minutes % 60;
+        return `${this.pad(hours)}:${this.pad(remainingMinutes)}`;
+      },
+      pad(num) {
+        return num < 10 ? '0' + num : num;
+      }
+    }
+
   };
   </script>
   
@@ -154,5 +167,10 @@
     visibility: visible;
     opacity: 1;
   }
+
+  .little-time {
+    color: red;
+  }
+
   </style>
   
