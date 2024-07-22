@@ -29,8 +29,9 @@
         return new AsYouType(this.chat.country).input('+' + this.chat.phone);
       },
       statusClass() {
-        return `status-${this.chat.status}`;
-      },
+            return `status-${this.chat.status}`;
+          },
+      
     },
 
     methods : {
@@ -50,6 +51,7 @@
   
   <style scoped>
   .chat-card {
+    cursor: pointer;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -98,37 +100,7 @@
     background-color: #ccc;
   }
 
-  .status-0 {
-    background-color: #9e5a2d;
-  }
   
-  .status-1 {
-    background-color: #000000;
-  }
-  
-  .status-2 {
-    background-color: #09f0f8;
-  }
-  
-  .status-3 {
-    background-color: #ff0000;
-  }
-  
-  .status-4 {
-    background-color: #d6b211;
-  }
-
-  .status-5 {
-    background-color: #51ff00;
-  }
-
-  .status-6 {
-    background-color: #174900;
-  }
-
-  .status-7 {
-    background-color: #ff8800;
-  }
 
   .tooltip {
     display: inline-block;

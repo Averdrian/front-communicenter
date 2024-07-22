@@ -1,5 +1,8 @@
 <template>
-  <div class="chat-main">
+  <div class="chat-main" v-if="chat">
+    <div class="chat-header">
+      <ChatMainHeadder :chat="chat" @click-notes="notesModal"/>
+    </div>
     <div class="messages-list" id="messages-list" @scroll="handleScroll">
       <div v-if="loading" class="loader"></div>
 
@@ -27,6 +30,16 @@
       </label>
       <button @click="sendMessage">Enviar</button>
     </div>
+
+
+    <div v-if="showNotesModal" class="modal-overlay" @click.self="showNotesModal = false">
+      <div class="modal">
+        <h2>Modal Title</h2>
+        <p>This is a simple modal.</p>
+        <button @click="showNotesModal = false">Close</button>
+      </div>
+    </div>
+
   </div>
 </template>
 
@@ -34,11 +47,13 @@
 import { chat_messages, send_message } from '@/routes/chats';
 import { get_message } from '@/routes/messages';
 import Message from './Message.vue';
+import ChatMainHeadder from './ChatMainHeadder.vue';
 
 export default {
   name: "ChatMain",
   components: {
     Message,
+    ChatMainHeadder
   },
   props: ['chat'],
   watch: { 
@@ -54,6 +69,7 @@ export default {
       new_message: '',
       selectedFile: null,
       loading : false,
+      showNotesModal: false,
     };
   },
 
@@ -169,7 +185,7 @@ export default {
 
     async handleScroll() {
       const messagesList = document.getElementById('messages-list');
-      if (messagesList.scrollTop === 0 && this.more_messages) {
+      if (messagesList.scrollTop === 0 && this.more_messages && !this.loading) {
         const currentScrollHeight = messagesList.scrollHeight;
         const currentScrollTop = messagesList.scrollTop;
         
@@ -186,7 +202,13 @@ export default {
         return this.messages[index - 1].user_id;
       }
       return null;
+    },
+
+    notesModal() {
+      this.showNotesModal = true;
+      
     }
+
   }
 };
 </script>
@@ -199,6 +221,17 @@ export default {
   background-color: #1E1E1E;
   padding: 10px;
   box-sizing: border-box;
+}
+
+.chat-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #2E2E2E;
+  color: #FFFFFF;
+  padding: 10px;
+  border-bottom: 1px solid #3B3B3B;
+  margin-bottom: 10px; /* Añade espacio entre la barra y los mensajes */
 }
 
 .messages-list {
@@ -272,6 +305,27 @@ export default {
   50% {background-size: 20% 100%,20% 10% ,20% 100%}
   66% {background-size: 20% 100%,20% 100%,20% 10% }
   100%{background-size: 20% 100%,20% 100%,20% 100%}
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8); /* Ajustado para coincidir con el esquema de colores */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal {
+  background: #2E2E2E; /* Fondo del modal ajustado al esquema de colores */
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5); /* Ajuste del color de la sombra */
+  text-align: center;
+  color: #DDD; /* Color del texto del modal */
 }
 
 </style>
