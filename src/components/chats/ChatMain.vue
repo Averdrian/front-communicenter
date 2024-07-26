@@ -34,9 +34,21 @@
 
     <div v-if="showNotesModal" class="modal-overlay" @click.self="showNotesModal = false">
       <div class="modal">
-        <h2>Modal Title</h2>
-        <p>This is a simple modal.</p>
-        <button @click="showNotesModal = false">Close</button>
+        <h2>Notas</h2>
+        <div class="note-input-container">
+          <input type="text" v-model="newNote" placeholder="Añadir nota..." class="note-input"/>
+          <button @click="createNote" class="add-note-button">+</button>
+        </div>
+        <div class="notes-list">
+          <div v-for="(note, index) in notes" :key="index" class="note">
+            <div class="note-content">
+              <div class="note-header">{{ note.username }}</div>
+              <div class="note-body">{{ note.note }}</div>
+            </div>
+            <button class="note-delete" @click="deleteNote(note.id)"><i class="fa-regular fa-trash-can"></i></button>
+          </div>
+        </div>
+        <button @click="showNotesModal = false">Cerrar</button>
       </div>
     </div>
 
@@ -48,6 +60,7 @@ import { chat_messages, send_message } from '@/routes/chats';
 import { get_message } from '@/routes/messages';
 import Message from './Message.vue';
 import ChatMainHeadder from './ChatMainHeadder.vue';
+import { create_note, chat_notes, delete_note } from '@/routes/chat_notes';
 
 export default {
   name: "ChatMain",
@@ -70,6 +83,8 @@ export default {
       selectedFile: null,
       loading : false,
       showNotesModal: false,
+      notes : [],
+      newNote : "",
     };
   },
 
@@ -204,9 +219,28 @@ export default {
       return null;
     },
 
-    notesModal() {
+    async notesModal() {
       this.showNotesModal = true;
-      
+
+      this.notes = await chat_notes(this.chat.id)
+    },
+
+    async deleteNote(note_id) {
+      console.log(note_id)
+      await delete_note(note_id);
+      this.notes = this.notes.filter(note => note.id !== note_id);
+    },
+
+    async createNote() {
+      if(this.newNote == '') return;
+      const form = {
+        chat_id: this.chat.id,
+        note: this.newNote
+      };
+
+      let note = await create_note(form);
+      this.notes.unshift(note);
+      this.newNote = '';
     }
 
   }
@@ -326,6 +360,70 @@ export default {
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5); /* Ajuste del color de la sombra */
   text-align: center;
   color: #DDD; /* Color del texto del modal */
+  width: 60%;
+  max-width: 60%;
 }
 
+.note-input-container {
+  display: flex;
+  margin-bottom: 10px;
+}
+
+.note-input {
+  flex: 25;
+  padding: 10px;
+  margin-right: 10px;
+  border-radius: 5px;
+  border: none;
+  background-color: #3B3B3B;
+  color: #DDD;
+}
+
+.add-note-button {
+  flex:1;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.notes-list {
+  max-height: 70vh; /* Ajuste de la altura máxima de la lista */
+  overflow-y: auto;
+}
+
+.note {
+  background-color: #3B3B3B;
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.note-content {
+  flex: 1;
+  margin-right: 10px;
+}
+
+.note-header {
+  font-weight: bold;
+  margin-bottom: 5px;
+  color: #FFC107;
+}
+
+.note-body {
+  margin-top: 20px;
+  color: #DDD;
+}
+
+.note-delete {
+  color: white;
+  background-color: red;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 3px;
+  cursor: pointer;
+}
 </style>
