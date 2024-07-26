@@ -23,14 +23,14 @@ export default {
   methods: {
     ...mapActions(['logout']),
     goToChat() {
-      this.$router.push({ name: 'chat' });
+      this.$router.push({ name: 'Chat' });
     },
     goToLogin() {
-      this.$router.push({ name: 'login' });
+      this.$router.push({ name: 'Login' });
     },
     handleLogout() {
       this.logout();
-      this.$router.push({ name : 'landing' })
+      this.$router.push({ name : 'Landing' })
     }
   },
 };

@@ -6,18 +6,22 @@ const auth = createStore({
   state: {
     user: null,
     isAuthenticated: false,
-    isChief : false
+    isChief : false,
+    isAdminOrganization : false
   },
   mutations: {
     SET_USER(state, user) {
+      console.log(user)
       state.user = user;
       state.isAuthenticated = !!user;
-      state.isChief = user ? user.role == 0 : false
+      state.isChief = user.role == 0
+      state.isAdminOrganization = user.organization_is_admin
     },
     LOGOUT(state) {
       state.user = null;
       state.isAuthenticated = false;
       state.isChief = false;
+      state.isAdminOrganization = false;
     }
   },
   actions: {
@@ -33,7 +37,8 @@ const auth = createStore({
   getters: {
     isAuthenticated: state => state.isAuthenticated,
     user: state => state.user,
-    isChief: state => state.isChief
+    isChief: state => state.isChief,
+    isAdminOrganization: state => state.isAdminOrganization
   },
   plugins: [
     new VuexPersistence({

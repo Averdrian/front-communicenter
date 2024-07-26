@@ -55,7 +55,6 @@ import { mapGetters } from 'vuex';
         if(this.selected_chat?.id === message.chat_id) {
           this.$refs.chat_main.receiveMessage(message.id);
         }  
-      console.log(message)
         
       this.receiveMessage(message.chat_id, message.new_chat_status, message.new_chat_status_name, message.new_expires_at);
 
@@ -105,7 +104,6 @@ import { mapGetters } from 'vuex';
       updateTimeLeft(chat) {
         const expiresAt = new Date(chat.expires_at).getTime();
         const now = new Date().getTime();
-        console.log((expiresAt - now )/ 3600)
         chat.time_left = Math.max(0, Math.floor((expiresAt - now) / 1000));
       },
 

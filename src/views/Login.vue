@@ -45,11 +45,11 @@ export default {
     let tgpass = document.getElementById("toggle-password");
     tgpass.style.height = document.getElementById("password").offsetHeight + "px";
 
-    this.fixEmailHeight();
-    window.addEventListener("resize", this.fixEmailHeight);
+    this.fixEmailWidth();
+    window.addEventListener("resize", this.fixEmailWidth);
   },
   unmounted() {
-    window.removeEventListener("resize", this.fixEmailHeight);
+    window.removeEventListener("resize", this.fixEmailWidth);
   },
   methods: {
     ...mapActions(['login']),
@@ -63,13 +63,13 @@ export default {
           password: this.password,
         };
         await this.login(credentials);
-        this.$router.push({ name: 'chat' });
+        this.$router.push({ name: 'Chat' });
       } catch (error) {
         this.error = true;
       }
     },
 
-    fixEmailHeight() {
+    fixEmailWidth() {
       let email = document.getElementById("email");
       email.style.width = document.getElementById("loggin-button").offsetWidth + "px";
     }

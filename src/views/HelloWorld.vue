@@ -53,7 +53,6 @@ export default {
 
   methods : {
     funcion : function() {
-      console.log(this.user.email);
     }
   }
 }
