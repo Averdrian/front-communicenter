@@ -24,7 +24,7 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
     const loggedIn = store.getters.isAuthenticated;
     const isAdminOrganization = store.getters.isAdminOrganization; // Asegúrate de que es un booleano
-    const isChief = store.getters.isChief;
+    const isManager = store.getters.isManager;
 
     if (to.matched.some(record => record.meta.requiresAdmin)) {
         if (!isAdminOrganization) {
@@ -33,8 +33,8 @@ router.beforeEach((to, from, next) => {
         } else {
             next();
         }
-    } else if (to.matched.some(record => record.meta.requiresChief)) {
-        if (!isChief) {
+    } else if (to.matched.some(record => record.meta.requiresManager)) {
+        if (!isManager) {
             next({ name: 'Login' });
         } else {
             next();

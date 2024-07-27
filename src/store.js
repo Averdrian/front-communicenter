@@ -6,7 +6,7 @@ const auth = createStore({
   state: {
     user: null,
     isAuthenticated: false,
-    isChief : false,
+    isManager : false,
     isAdminOrganization : false
   },
   mutations: {
@@ -14,13 +14,13 @@ const auth = createStore({
       console.log(user)
       state.user = user;
       state.isAuthenticated = !!user;
-      state.isChief = user.role == 0
+      state.isManager = user.role == 0
       state.isAdminOrganization = user.organization_is_admin
     },
     LOGOUT(state) {
       state.user = null;
       state.isAuthenticated = false;
-      state.isChief = false;
+      state.isManager = false;
       state.isAdminOrganization = false;
     }
   },
@@ -37,7 +37,7 @@ const auth = createStore({
   getters: {
     isAuthenticated: state => state.isAuthenticated,
     user: state => state.user,
-    isChief: state => state.isChief,
+    isManager: state => state.isManager,
     isAdminOrganization: state => state.isAdminOrganization
   },
   plugins: [
