@@ -4,7 +4,7 @@
     <div class="message-bubble" :class="message.user_id == user.id ? 'message-self' : 'message-mate'">
       <div v-if="message.media">
         <div v-if="['IMAGE', 'STICKER', 'VIDEO', 'DOCUMENT'].includes(message.type)" class="document-container">
-          <img v-if="['IMAGE', 'STICKER'].includes(message.type)" class="media-video-image" :src="`data:${message.media.mime_type};base64,${message.media.content}`"  loop=infinite>
+          <img v-if="['IMAGE', 'STICKER'].includes(message.type)" class="media-video-image" :src="`data:${message.media.mime_type};base64,${message.media.content}`">
           <video v-if="message.type === 'VIDEO'" class="media-video-image" :src="`data:${message.media.mime_type};base64,${message.media.content}`" controls></video>
           <div v-if="message.type === 'DOCUMENT'" class="document-content">
             <iframe v-if="['application/pdf'].includes(message.media.mime_type)" class="media-document" :src="`data:${message.media.mime_type};base64,${message.media.content}`"></iframe>
@@ -17,6 +17,12 @@
       </div>
       <p class="message-text">{{ message.message }}</p>
       <p class="message-time">{{ message.sent_at }}</p>
+      <div v-if="message.user_id" class="chat-status">
+        <i v-if="message.status==0" class="fa-solid fa-hourglass-half"></i>
+        <i v-if="message.status==1" class="fa-solid fa-check"></i>
+        <i v-if="message.status==2" class="fa-solid fa-check-double"></i>
+        <i v-if="message.status==3" class="fa-solid fa-check-double" style="color:#1E90FF"></i>
+      </div>
     </div>
   </div>
 </template>
@@ -99,8 +105,6 @@ export default {
   color: #48C9B0;
 }
 
-
-
 .message-mate .message-user {
   color: #48C9B0;
 }
@@ -113,13 +117,12 @@ export default {
   color: #ddd;
   word-wrap: break-word;
   min-width: 20%;
+  position: relative; /* Asegúrate de que message-bubble tiene posición relativa */
 }
 
 .from-user .message-bubble {
-  
   color: black;
 }
-
 
 .message-self {
   background-color: #FFEB3B;
@@ -127,13 +130,6 @@ export default {
 
 .from-user .message-mate {
   background-color: #48C9B0;
-}
-
-.from-user .message-bubble::after {
-  right: -20px;
-  border-left-color: #4a4a4a; 
-  border-right: 0;
-  margin-top: -10px;
 }
 
 .message-bubble::after {
@@ -157,8 +153,8 @@ export default {
 }
 
 .from-user .message-time {
-  color: black
-} 
+  color: black;
+}
 
 .media-video-image {
   height: 25vh;
@@ -203,12 +199,23 @@ export default {
 .download-button:hover {
   background-color: #ffd90086 !important;
   color: black !important;
- 
 }
 
 .document-container:hover .download-button {
   opacity: 1;
   backdrop-filter: blur(50px); /* Borroso el fondo */
+}
+
+.chat-status {
+  position: absolute;
+  bottom: 5px;
+  right: 5px;
+  font-size: 1em;
+  color: #888;
+}
+
+.chat-status {
+  color: #666666;
 }
 
 </style>

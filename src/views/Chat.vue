@@ -35,7 +35,8 @@ import { mapGetters } from 'vuex';
       return {
         chat_list : [],
         selected_chat : null,
-        socket : null,
+        socket_messages : null,
+        socket_status : null,
         interval_id : null
       }
     },
@@ -49,9 +50,10 @@ import { mapGetters } from 'vuex';
       
     },
     async mounted() {
-      this.socket = io(process.env.VUE_APP_API_BASE_URL);
+      this.socket_messages = io(process.env.VUE_APP_API_BASE_URL);
+      this.socket_status = io(process.env.VUE_APP_API_BASE_URL);
 
-      this.socket.on('receive-message-'+this.user.organization_id, (message) => {
+      this.socket_messages.on('receive-message-'+this.user.organization_id, (message) => {
         if(this.selected_chat?.id === message.chat_id) {
           this.$refs.chat_main.receiveMessage(message.id);
         }  
@@ -63,13 +65,22 @@ import { mapGetters } from 'vuex';
    
   },  
   beforeUnmount() {
-    if(this.socket)
-      this.socket.close();
+    if(this.socket_messages)
+      this.socket_messages.close();
+    if(this.socket_status)
+      this.socket_status.close();
       clearInterval(this.interval_id);
     },
     methods : {
       selectedChat(chat) {
+        if(this.selected_chat) {
+          this.socket_status.close();
+        }
+
         this.selected_chat = chat;
+        this.socket_messages.on('receive-status-'+this.selected_chat.id, (message_data) => {
+          this.$refs.chat_main.newMessageStatus(message_data.message_id, message_data.status);
+        });
       },
 
       sendedMessage(message) {

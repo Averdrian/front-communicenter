@@ -226,7 +226,6 @@ export default {
     },
 
     async deleteNote(note_id) {
-      console.log(note_id)
       await delete_note(note_id);
       this.notes = this.notes.filter(note => note.id !== note_id);
     },
@@ -241,6 +240,13 @@ export default {
       let note = await create_note(form);
       this.notes.unshift(note);
       this.newNote = '';
+    },
+
+    newMessageStatus(message_id, status) {
+      const index = this.messages.findIndex(message => message.id == message_id);
+      if(index != -1 && this.messages[index].status < status) {
+        this.messages[index].status = status;
+      }
     }
 
   }
