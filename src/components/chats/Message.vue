@@ -14,8 +14,10 @@
           <button @click="downloadDocument" class="download-button"><i class="fa-regular fa-circle-down"></i></button> 
         </div>
         <audio v-if="message.type === 'AUDIO'" class="media-audio" :src="`data:${message.media.mime_type};base64,${message.media.content}`" controls></audio>
+        
       </div>
-      <p class="message-text">{{ message.message }}</p>
+      <a class="message-text location-message" target="_blank" :href="message.message" v-if="message.type=='LOCATION'">Maps Location</a>
+      <p class="message-text" v-else>{{ message.message }}</p>
       <p class="message-time">{{ message.sent_at }}</p>
       <div v-if="message.user_id" class="chat-status">
         <i v-if="message.status==0" class="fa-solid fa-hourglass-half"></i>
@@ -85,6 +87,10 @@ export default {
   flex-direction: column;
   align-items: flex-start;
   margin: 10px;
+}
+
+.location-message {
+  color: red;
 }
 
 .from-user {
