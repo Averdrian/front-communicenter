@@ -5,8 +5,11 @@ import Login from "@/views/Login.vue";
 import Chat from "@/views/Chat.vue";
 import NotFound from "@/views/NotFound.vue";
 import Register from "@/views/Register.vue";
+import Users from '@/views/Users.vue';
+import RegisterOrganization from './views/CreateOrganization.vue';
 
 import store from './store';
+import Organizations from './views/Organizations.vue';
 
 const routes = [
     { path: "/", component: HelloWorld, name: "Landing" },
@@ -14,6 +17,9 @@ const routes = [
     { path: "/chat", component: Chat, name: "Chat" },
     { path: "/:pathMatch(.*)*", name: "NotFound", component: NotFound },
     { path: "/register", component: Register, name: "Register", meta: { requiresManager: true } },
+    { path: "/users", component: Users, name: "Users", meta: {requiresAuth: true} },
+    { path: "/createorganization", component: RegisterOrganization, name: "CreateOrganization", meta: { requiresAdmin: true } },
+    { path: "/organizations", component: Organizations, name: "Organizations", meta : {requiresAdmin: true}}
 ];
 
 const router = createRouter({

@@ -103,7 +103,7 @@ export default {
                   role: this.isManager ? 0 : 1
               };
               let response = await register(credentials);
-              if(response == true) this.$router.push({name: 'Landing'})
+              if(response == true) this.$router.push({name: 'Users'})
           } catch (error) {
               this.error = true;
           }

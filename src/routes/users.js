@@ -5,6 +5,7 @@ import axiosInstance from "../axios"
         let response = axiosInstance.post("/signup", register_form)
             .then( response => {
                 if(response.status == 201) return true;
+                else return false;
             })
             .catch(error => {
                 throw error;
