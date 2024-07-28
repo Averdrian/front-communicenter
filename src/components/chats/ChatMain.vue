@@ -261,6 +261,7 @@ export default {
   background-color: #1E1E1E;
   padding: 10px;
   box-sizing: border-box;
+  overflow: hidden; /* Evita el desbordamiento */
 }
 
 .chat-header {
@@ -325,7 +326,6 @@ export default {
 .file-input-label i {
   font-size: 1.2rem;
 }
-
 
 .loader {
   display: inline-block;
