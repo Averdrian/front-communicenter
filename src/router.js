@@ -13,7 +13,7 @@ const routes = [
     { path: "/login", component: Login, name: "Login" },
     { path: "/chat", component: Chat, name: "Chat" },
     { path: "/:pathMatch(.*)*", name: "NotFound", component: NotFound },
-    { path: "/register", component: Register, name: "Register", meta: { requiresAdmin: true } },
+    { path: "/register", component: Register, name: "Register", meta: { requiresManager: true } },
 ];
 
 const router = createRouter({

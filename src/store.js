@@ -11,7 +11,6 @@ const auth = createStore({
   },
   mutations: {
     SET_USER(state, user) {
-      console.log(user)
       state.user = user;
       state.isAuthenticated = !!user;
       state.isManager = user.role == 0

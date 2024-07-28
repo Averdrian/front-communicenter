@@ -23,7 +23,7 @@
                       </button>
                   </div>
               </div>
-              <div class="form-group">
+              <div v-if="isAdminOrganization" class="form-group">
                   <label for="organization">Organization:</label>
                   <select id="organization" v-model="organization" required>
                       <option v-for="org in organizations" :key="org.id" :value="org.id">{{ org.name }}</option>
@@ -47,6 +47,7 @@
 import ViewTitle from '@/components/ViewTitle.vue';
 import { get_organizations } from '@/routes/organizations';
 import { register } from '@/routes/users';
+import { mapGetters } from 'vuex';
 
 export default {
   data() {
@@ -67,6 +68,22 @@ export default {
       let organizations = await get_organizations();
       this.organizations = organizations;
   },
+  computed : {
+    ...mapGetters(['isAdminOrganization', 'user']),
+  },
+
+  mounted() {
+    if(!this.isAdminOrganization) {
+      this.organization_id = this.user.organization_id;
+    }
+    this.fixWidths();
+    window.addEventListener("resize", this.fixEmailWidth);
+  }, 
+  
+  unmounted() {
+    window.removeEventListener("resize", this.fixEmailWidth);
+  },
+
   methods: {
       togglePasswordVisibility() {
           this.showPassword = !this.showPassword;
@@ -100,6 +117,15 @@ export default {
         this.emailError = !is_valid;
         
         return is_valid;
+      },
+      fixWidths() {
+        let username = document.getElementById("username");
+        let email = document.getElementById("email");
+
+        const register_button_width = document.getElementById('register-button').offsetWidth + 'px';
+
+        username.style.width = register_button_width;
+        email.style.width = register_button_width;
       }
   }
 };
@@ -134,7 +160,7 @@ h2 {
 }
 
 .form-group {
-  width: 100%;
+  max-width: 100%;
   margin-bottom: 1.5em;
 }
 
