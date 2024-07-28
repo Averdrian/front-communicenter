@@ -28,13 +28,12 @@ router.beforeEach((to, from, next) => {
 
     if (to.matched.some(record => record.meta.requiresAdmin)) {
         if (!isAdminOrganization) {
-            console.log('Access denied. Not an admin organization.');
             next({ name: 'NotFound' });
         } else {
             next();
         }
     } else if (to.matched.some(record => record.meta.requiresManager)) {
-        if (!isManager) {
+        if (!isManager && !isAdminOrganization) {
             next({ name: 'Login' });
         } else {
             next();
