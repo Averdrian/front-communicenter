@@ -7,14 +7,14 @@
               <div class="form-group">
                  <label for="email">Email:</label>
                  <input type="email" id="email" v-model="email" @blur="isValidEmail(email)" required/>
-                  <p v-if="emailError"  class="error-message">Invalid email format.</p>
+                  <p v-if="emailError"  class="error-message">Formato de email inválido</p>
               </div>
               <div class="form-group">
-                  <label for="username">Username:</label>
+                  <label for="username">Nombre de usuario:</label>
                   <input type="text" id="username" v-model="username" required/>
               </div>
               <div class="form-group">
-                  <label for="password">Password:</label>
+                  <label for="password">Contraseña:</label>
                   <div class="password-container">
                       <input :type="showPassword ? 'text' : 'password'" id="password" class="password-input" v-model="password" required />
                       <button type="button" id="toggle-password" class="toggle-password" @click="togglePasswordVisibility">
@@ -24,20 +24,20 @@
                   </div>
               </div>
               <div v-if="isAdminOrganization" class="form-group">
-                  <label for="organization">Organization:</label>
+                  <label for="organization">Organización:</label>
                   <select id="organization" v-model="organization" required>
                       <option v-for="org in organizations" :key="org.id" :value="org.id">{{ org.name }}</option>
                   </select>
               </div>
               <div class="form-group">
-                  <label class="checkbox-label" for="is-manager">Is Manager 
+                  <label class="checkbox-label" for="is-manager">Es Manager
                       <input type="checkbox" id="is-manager" v-model="isManager"/>
                   </label>
               </div>
               <div class="form-group register-button">
-                  <button id="register-button" type="button" @click="handleRegister">Register</button>
+                  <button id="register-button" type="button" @click="handleRegister">Crear Usuario</button>
               </div>
-              <p v-if="error" class="error-message">Error during registration. Please try again.</p>
+              <p v-if="error" class="error-message">Error en el registro</p>
           </form>
       </div>
   </div>
