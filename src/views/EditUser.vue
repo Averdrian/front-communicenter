@@ -29,7 +29,7 @@
                     </label>
                 </div>
                 <div class="form-group register-button">
-                    <button id="register-button" type="button" @click="editUser">Register</button>
+                    <button id="register-button" type="button" @click="editUser">Editar Usuario</button>
                 </div>
                 <p v-if="error" class="error-message">Error during registration. Please try again.</p>
             </form>
