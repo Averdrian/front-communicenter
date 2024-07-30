@@ -1,12 +1,13 @@
 import { createRouter, createWebHistory } from 'vue-router';
 
-import HelloWorld from "@/views/HelloWorld.vue";
+import HelloWorld from "@/views/Landing.vue";
 import Login from "@/views/Login.vue";
 import Chat from "@/views/Chat.vue";
 import NotFound from "@/views/NotFound.vue";
 import Register from "@/views/Register.vue";
 import Users from '@/views/Users.vue';
 import RegisterOrganization from './views/CreateOrganization.vue';
+import EditUser from './views/EditUser.vue';
 
 import store from './store';
 import Organizations from './views/Organizations.vue';
@@ -19,7 +20,8 @@ const routes = [
     { path: "/register", component: Register, name: "Register", meta: { requiresManager: true } },
     { path: "/users", component: Users, name: "Users", meta: {requiresAuth: true} },
     { path: "/createorganization", component: RegisterOrganization, name: "CreateOrganization", meta: { requiresAdmin: true } },
-    { path: "/organizations", component: Organizations, name: "Organizations", meta : {requiresAdmin: true}}
+    { path: "/organizations", component: Organizations, name: "Organizations", meta : {requiresAdmin: true}},
+    { path: "/user/edit", component: EditUser, name: "EditUser", meta: { requiresAuth: true } },
 ];
 
 const router = createRouter({

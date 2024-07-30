@@ -2,13 +2,12 @@
 <template>
   <div class="header">
     <div class="logo-container">
-      <img class="logo" src="logo.png" alt="Logo">
+      <img class="logo" src="/logo.png" alt="Logo" @click="goToLanding">
       <!-- <img class="logo" src="logo.png" alt="Logo" /> -->
     </div>
     <div class="menu">
-      <button v-if="isAuthenticated" @click="goToChat">Chat</button>
-      <button v-if="isAuthenticated" @click="handleLogout">Logout</button>
-      <button v-else @click="goToLogin">Login</button>
+      <button v-if="isAuthenticated" @click="handleLogout">Cerrar Sesión</button>
+      <button v-else @click="goToLogin">Iniciar Sesión</button>
     </div>
   </div>
 </template>
@@ -22,6 +21,9 @@ export default {
   },
   methods: {
     ...mapActions(['logout']),
+    goToLanding() {
+      this.$router.push({ name: 'Landing' });
+    },
     goToChat() {
       this.$router.push({ name: 'Chat' });
     },
@@ -55,6 +57,7 @@ export default {
 .logo {
   max-height: 85%;
   object-fit: contain;
+  cursor: pointer;
 }
 
 .menu {
