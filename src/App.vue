@@ -50,6 +50,7 @@ body {
 .view {
   height: 90vh !important;
   overflow-x: hidden !important;
+  overflow-y:hidden !important;
 }
 
 /* Personalización del scrollbar para navegadores basados en WebKit (Chrome, Safari) */

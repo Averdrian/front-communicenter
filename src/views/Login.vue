@@ -2,7 +2,7 @@
   <ViewTitle title="Login"/>
   <div class="login-container">
     <div class="login">
-      <h2>Login</h2>
+      <h2>Inicia Sesión</h2>
       <form @submit.prevent="login">
         <div class="form-group">
           <label for="email">Email:</label>
@@ -19,7 +19,7 @@
           </div>
         </div>
         <div class="form-group loggin-button">
-          <button id="loggin-button" type="button" @click="handleLogin">Login</button>
+          <button id="loggin-button" type="button" @click="handleLogin">Iniciar Sesión</button>
         </div>
         <p v-if="error" class="error-message">Email o contraseña incorrectos. Inténtalo de nuevo.</p>
       </form>

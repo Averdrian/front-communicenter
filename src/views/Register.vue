@@ -37,7 +37,7 @@
               <div class="form-group register-button">
                   <button id="register-button" type="button" @click="handleRegister">Crear Usuario</button>
               </div>
-              <p v-if="error" class="error-message">Error en el registro</p>
+              <p v-if="error" class="error-message">{{error_message}}</p>
           </form>
       </div>
   </div>
@@ -60,7 +60,8 @@ export default {
           showPassword: false,
           isManager: false,
           error: false,
-          emailError: false
+          emailError: false,
+          error_message: false
       };
   },
   components : { ViewTitle },
@@ -90,8 +91,17 @@ export default {
       },
       async handleRegister() {
           try {
-              if(this.emailError || this.username == '' || this.password == '' || this.organization == null) {
+              this.error_message = ""
+              if(this.emailError || this.username == '' || this.organization == null || this.password.length < 7) {
                 this.error = true;
+                if(this.emailError) this.error_message = "Formato de email no válido"
+
+                else if(this.username == '' || this.organization == null) {
+                  this.error_message = "Faltan campos por rellenar en el formulario";
+                }
+                else if(this.password.length < 7) {
+                  this.error_message = "La contraseña debe tener al menos 7 caracteres";
+                }
                 return;
               }
               
@@ -115,7 +125,6 @@ export default {
         const is_valid = re.test(String(email).toLowerCase())
         
         this.emailError = !is_valid;
-        
         return is_valid;
       },
       fixWidths() {

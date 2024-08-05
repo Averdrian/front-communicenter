@@ -110,7 +110,7 @@
                 }
                 const credentials = {}
                 if(this.initial_email != this.email) credentials['email'] = this.email;
-                if(this.initial_username != this.username) credentials['usernam'] = this.email;
+                if(this.initial_username != this.username) credentials['username'] = this.email;
                 if(this.initial_email != this.email) credentials['email'] = this.email;
                 if(this.password) credentials['password'] = this.password;
                 if(this.initial_isManager != this.is_manager) credentials['role'] = this.isManager;
