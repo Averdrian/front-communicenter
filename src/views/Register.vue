@@ -2,7 +2,7 @@
   <ViewTitle title="Register"/>
   <div class="register-container">
       <div class="register">
-          <h2>Register</h2>
+          <h2>Registro</h2>
           <form @submit.prevent="handleRegister">
               <div class="form-group">
                  <label for="email">Email:</label>
@@ -121,7 +121,7 @@ export default {
 
       isValidEmail(email) {
         // Expresión regular para validar un email
-        const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        const re = /[A-Za-z0-9._%+-]+(?<!\.)@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
         const is_valid = re.test(String(email).toLowerCase())
         
         this.emailError = !is_valid;

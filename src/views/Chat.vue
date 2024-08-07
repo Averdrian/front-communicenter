@@ -125,7 +125,7 @@ export default {
 }
 
 .sidebar {
-  flex: 0 0 250px;
+  flex: 0 0 350px;
   background-color: #1e1e1e; /* Color de fondo más oscuro */
   padding: 10px;
   box-sizing: border-box;

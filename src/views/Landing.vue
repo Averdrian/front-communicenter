@@ -55,7 +55,7 @@ export default {
       if(this.user != null) {
       this.subtitle_text = `Hola ${this.user.username}`;
     }
-    else this.subtitle_text = 'Inicie sesión para operar';
+    else this.subtitle_text = 'Inicie sesión para poder operar en la aplicación';
     }
   }
 }

@@ -2,12 +2,12 @@
     <ViewTitle title="Register"/>
     <div class="register-container">
         <div class="register">
-            <h2>Register</h2>
+            <h2>Editar Usuario</h2>
             <form @submit.prevent="handleRegister">
                 <div class="form-group">
                    <label for="email">Email:</label>
                    <input type="email" id="email" v-model="email" @blur="isValidEmail(email)" required/>
-                    <p v-if="emailError"  class="error-message">Formato de email invalido</p>
+                    <p v-if="emailError"  class="error-message">Formato de email invalido</p> 
                 </div>
                 <div class="form-group">
                     <label for="username">Nombre de usuario:</label>
