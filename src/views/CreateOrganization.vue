@@ -2,20 +2,20 @@
     <ViewTitle title="Register Organization"/>
     <div class="register-container">
       <div class="register">
-        <h2>Register Organization</h2>
+        <h2>Crear Organización</h2>
         <form @submit.prevent="handleRegister">
           <div class="form-group">
-            <label for="name">Organization Name:</label>
+            <label for="name">Nombre:</label>
             <input type="text" id="name" v-model="name" required/>
           </div>
           <div class="form-group">
             <label for="whatsapp_phone_id">WhatsApp Phone ID (opcional):</label>
             <input type="number" id="whatsapp_phone_id" v-model="whatsapp_phone_id" required/>
           </div>
-          <div class="form-group">
+          <!-- <div class="form-group">
             <label for="whatsapp_business_account_id">WhatsApp Business Account ID (opcional):</label>
             <input type="number" id="whatsapp_business_account_id" v-model="whatsapp_business_account_id" required/>
-          </div>
+          </div> -->
           <div class="form-group">
             <label for="whatsapp_api_key">WhatsApp API Key (opcional):</label>
             <input type="text" id="whatsapp_api_key" v-model="whatsapp_api_key"/>
@@ -25,9 +25,9 @@
             <input type="text" id="whatsapp_api_key" v-model="whatsapp_verify_token"/>
           </div>
           <div class="form-group register-button">
-            <button id="register-button" type="button" @click="handleRegister">Register</button>
+            <button id="register-button" type="button" @click="handleRegister">Crear Organización</button>
           </div>
-          <p v-if="error" class="error-message">Error during registration. Please try again.</p>
+          <p v-if="error" class="error-message">Error al crear la organización, inténtelo de nuevo más tarde</p>
         </form>
       </div>
     </div>

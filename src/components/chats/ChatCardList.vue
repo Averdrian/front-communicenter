@@ -30,7 +30,8 @@ import ChatCard from './ChatCard.vue';
     flex-direction: column;
     overflow-y: auto;
     height: 100%;
-    padding-right: 10px;
+    padding-right: 5px;
+    padding-left: 5px;
     overflow-x: hidden;
   }
   </style>

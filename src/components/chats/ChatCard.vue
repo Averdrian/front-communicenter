@@ -56,7 +56,7 @@
     flex-direction: column;
     justify-content: space-between;
     padding: 1em;
-    margin: 0.5em 0;
+    margin: 0.3em 0;
     border: 1px solid #444;
     border-radius: 10px;
     background-color: #444444;
@@ -105,6 +105,7 @@
   .tooltip {
     display: inline-block;
     border-bottom: 1px dotted black;
+    z-index: 10;
   }
   
   .tooltip .tooltiptext {
@@ -116,7 +117,7 @@
     border-radius: 6px;
     padding: 5px 0;
     position: absolute;
-    z-index: 1;
+    z-index: 20; /* Asegúrate de que el tooltip esté por encima de otros elementos */
     bottom: 125%;
     left: 50%;
     margin-left: -60px;

@@ -23,6 +23,12 @@
                         </button>
                     </div>
                 </div>
+                <div class="form-group">
+                  <label for="repeat_password">Repetir contraseña:</label>
+                  <input type="password" id="repeat_password" v-model="repeat_password" required/>
+              </div>
+              <p v-if="mismatch_password" class="error-message">Las contraseñas no coinciden.</p>
+
                 <div v-if="can_edit_is_manager" class="form-group">
                     <label class="checkbox-label" for="is-manager">Es Manager
                         <input type="checkbox" id="is-manager" v-model="is_manager"/>
@@ -31,7 +37,7 @@
                 <div class="form-group register-button">
                     <button id="register-button" type="button" @click="editUser">Editar Usuario</button>
                 </div>
-                <p v-if="error" class="error-message">Error during registration. Please try again.</p>
+                <p v-if="error" class="error-message">Error al editar el usuario.</p>
             </form>
         </div>
     </div>
@@ -52,12 +58,14 @@
             initial_username: '',
             username: '',
             password: '',
+            repeat_password: '',
             showPassword: false,
             can_edit_is_manager: false,
             initial_isManager: false,
             is_manager: false,
             error: false,
-            emailError: false
+            emailError: false,
+            mismatch_password: false
         };
     },
     components : { ViewTitle },
@@ -108,9 +116,13 @@
                   this.error = true;
                   return;
                 }
+                if((this.password != '' || this.repeat_password != '') && this.password != this.repeat_password) {
+                  this.mismatch_password = true;
+                  return;
+                }
                 const credentials = {}
                 if(this.initial_email != this.email) credentials['email'] = this.email;
-                if(this.initial_username != this.username) credentials['username'] = this.email;
+                if(this.initial_username != this.username) credentials['username'] = this.username;
                 if(this.initial_email != this.email) credentials['email'] = this.email;
                 if(this.password) credentials['password'] = this.password;
                 if(this.initial_isManager != this.is_manager) credentials['role'] = this.isManager;
@@ -140,11 +152,13 @@
         fixWidths() {
           let username = document.getElementById("username");
           let email = document.getElementById("email");
+          let repeat_password = document.getElementById("repeat_password");
   
           const register_button_width = document.getElementById('register-button').offsetWidth + 'px';
   
           username.style.width = register_button_width;
           email.style.width = register_button_width;
+          repeat_password.style.width = register_button_width;
         }
     }
   };

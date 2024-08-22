@@ -149,6 +149,7 @@ export default {
 .message-text {
   margin: 0;
   text-align: left;
+  white-space: pre-line;
 }
 
 .message-time {

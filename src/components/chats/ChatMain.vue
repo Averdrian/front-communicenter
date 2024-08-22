@@ -14,10 +14,10 @@
       />
     </div>
     <div class="message-input">
-      <input 
+      <textarea
         type="text" 
         v-model="new_message" 
-        @keyup.enter="sendMessage"
+        @keyup.enter="handleEnter"
         placeholder="Escribe un mensaje..."
       />
       <label class="file-input-label">
@@ -36,7 +36,7 @@
       <div class="modal">
         <h2>Notas</h2>
         <div class="note-input-container">
-          <input type="text" v-model="newNote" placeholder="Añadir nota..." class="note-input"/>
+          <textarea type="text" v-model="newNote" placeholder="Añadir nota..." class="note-input"/>
           <button @click="createNote" class="add-note-button">+</button>
         </div>
         <div class="notes-list">
@@ -114,6 +114,13 @@ export default {
         this.$nextTick(() => {
           this.scrollToBottom();
         });
+      }
+    },
+
+    handleEnter(event) {
+      if (!event.shiftKey) {
+        // Si se presiona solo Enter, enviar el mensaje
+        this.sendMessage();
       }
     },
 
@@ -289,7 +296,7 @@ export default {
   border-top: 1px solid #333;
 }
 
-.message-input input[type="text"] {
+.message-input textarea {
   flex: 1;
   padding: 10px;
   border: none;
@@ -297,6 +304,7 @@ export default {
   background-color: #2a2a2a;
   color: #ddd;
   margin-right: 10px;
+  resize: none;
 }
 
 .message-input button {
@@ -422,6 +430,7 @@ export default {
 .note-body {
   margin-top: 20px;
   color: #DDD;
+  white-space: pre-line;
 }
 
 .note-delete {
