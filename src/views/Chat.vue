@@ -55,13 +55,22 @@ export default {
       
       this.receiveMessage(message.chat_id, message.new_chat_status, message.new_chat_status_name, message.new_expires_at);
     });
+
+    this.socket_messages.on('chat-status-'+this.user.organization_id, (chat_status_data) => {
+      const index = this.chat_list.findIndex(chat => chat.id === chat_status_data.chat_id);
+        if(index != -1) {
+          this.chat_list[index].status = chat_status_data.status;
+          this.chat_list[index].status_name = chat_status_data.status_name
+        }
+    });
+
   },  
   beforeUnmount() {
     if(this.socket_messages)
       this.socket_messages.close();
     if(this.socket_status)
       this.socket_status.close();
-      clearInterval(this.interval_id);
+    clearInterval(this.interval_id);
     },
   methods : {
     selectedChat(chat) {
