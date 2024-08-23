@@ -1,5 +1,5 @@
 <template>
-    <ViewTitle title="Register"/>
+    <ViewTitle title="Editar Usuario"/>
     <div class="register-container">
         <div class="register">
             <h2>Editar Usuario</h2>
@@ -70,6 +70,9 @@
     },
     components : { ViewTitle },
     async created() {
+
+      console.log(this.$route.params)
+
         if((!this.isAdminOrganization && !this.isManager) || !this.$route.params.user_id) {
             this.initial_email = this.user.email;
             this.initial_username = this.user.username;
@@ -79,11 +82,12 @@
             this.user_id = this.user.id;
         }
         else {
-            this.user_id = this.$route.params.user_id;
-            let user_to_edit = get_user(this.user_id);
+          this.user_id = this.$route.params.user_id;
+          let user_to_edit = await get_user(this.user_id);
             this.initial_email = user_to_edit.email;
             this.initial_username = user_to_edit.username;
-            this.initial_isManager = user_to_edit.isManager;
+            this.initial_isManager = Boolean(user_to_edit.role);
+            this.is_manager = Boolean(user_to_edit.role);
             this.can_edit_is_manager = true;
         }
         this.email = this.initial_email;
@@ -125,8 +129,13 @@
                 if(this.initial_username != this.username) credentials['username'] = this.username;
                 if(this.initial_email != this.email) credentials['email'] = this.email;
                 if(this.password) credentials['password'] = this.password;
-                if(this.initial_isManager != this.is_manager) credentials['role'] = this.isManager;
+                if(this.initial_isManager != this.is_manager) credentials['role'] = Number(this.is_manager);
                 
+                if(Object.keys(credentials).length == 0) {
+                  this.$router.push({name: 'Users'});
+                  return;
+                }
+
                 await edit_user(this.user_id, credentials); 
                 
                 if(!this.isAdminOrganization && !this.isManager) 

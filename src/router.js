@@ -21,7 +21,7 @@ const routes = [
     { path: "/users", component: Users, name: "Users", meta: {requiresAuth: true} },
     { path: "/createorganization", component: RegisterOrganization, name: "CreateOrganization", meta: { requiresAdmin: true } },
     { path: "/organizations", component: Organizations, name: "Organizations", meta : {requiresAdmin: true}},
-    { path: "/user/edit", component: EditUser, name: "EditUser", meta: { requiresAuth: true } },
+    { path: "/user/edit/:user_id?", component: EditUser, name: "EditUser", meta: { requiresAuth: true } },
 ];
 
 const router = createRouter({

@@ -110,7 +110,7 @@ export default {
                   username: this.username,
                   password: this.password,
                   organization_id: this.organization,
-                  role: this.isManager ? 0 : 1
+                  role: this.isManager ? 1 : 0
               };
               let response = await register(credentials);
               if(response == true) this.$router.push({name: 'Users'})

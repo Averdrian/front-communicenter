@@ -16,7 +16,7 @@ import axiosInstance from "../axios"
     
     export function users(query_args = '') {
         let query_str = query_args != '' ? '?'+query_args : ''
-        let response = axiosInstance.post(`/users${query_str}`)
+        let response = axiosInstance.get(`/users${query_str}`)
             .then(response => {
                 return response.data.users;
             })
