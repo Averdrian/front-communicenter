@@ -36,3 +36,25 @@ import axiosInstance from "../axios";
         return response;
 
     }
+
+    export function statuses() {
+        let response = axiosInstance.get('/chat/statuses')
+            .then(response => {
+                return response.data.statuses;
+            })
+            .catch(error => {
+                throw error;
+            })
+        return response;
+    }
+
+    export function update_status(chat_id, status) {
+        let response = axiosInstance.patch(`/chat/${chat_id}/status/${status}`)
+            .then(response => {
+                return response.data.status;
+            })
+            .catch(error => {
+                throw error;
+            })
+        return response;
+    }

@@ -1,7 +1,7 @@
 <template>
   <div class="chat-main" v-if="chat">
     <div class="chat-header">
-      <ChatMainHeadder :chat="chat" @click-notes="notesModal"/>
+      <ChatMainHeadder  @update-chat-status='updateChatStatus' :chat="chat" @click-notes="notesModal"/>
     </div>
     <div class="messages-list" id="messages-list" @scroll="handleScroll">
       <div v-if="loading" class="loader"></div>
@@ -21,7 +21,7 @@
         placeholder="Escribe un mensaje..."
       />
       <label class="file-input-label">
-        <i class="fa-solid fa-paperclip"></i>
+        <i class="fa-solid fa-paperclip icon-file"></i>
         <input 
           type="file" 
           ref="fileInput"
@@ -254,6 +254,11 @@ export default {
       if(index != -1 && this.messages[index].status < status) {
         this.messages[index].status = status;
       }
+    },
+
+    updateChatStatus(status) {
+      console.log('chatmain')
+      this.$emit('update-chat-status', status);
     }
 
   }
@@ -303,7 +308,6 @@ export default {
   border-radius: 5px;
   background-color: #2a2a2a;
   color: #ddd;
-  margin-right: 10px;
   resize: none;
 }
 
@@ -323,7 +327,11 @@ export default {
 .file-input-label {
   display: inline-block;
   cursor: pointer;
-  margin-right: 10px;
+  width: 70px;
+  /*margin-right: 10px;*/
+  height: 100%;
+  background-color: #525252;
+  border-radius: 7px;
   color: #ddd;
 }
 
@@ -333,6 +341,10 @@ export default {
 
 .file-input-label i {
   font-size: 1.2rem;
+}
+
+.icon-file {
+  margin-top: 20%;
 }
 
 .loader {

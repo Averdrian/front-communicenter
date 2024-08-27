@@ -5,7 +5,7 @@
       <ChatCardList @selected="selectedChat" :chat_list="chat_list" ref="chat_card_list"/>
     </div>
     <div class="main-chat">
-      <ChatMain v-if="selected_chat" :chat="selected_chat" @sended_message="sendedMessage" ref="chat_main"/>  
+      <ChatMain @update-chat-status='updateChatStatus' v-if="selected_chat" :chat="selected_chat" @sended_message="sendedMessage" ref="chat_main"/>  
     </div>
   </div>
 </template>
@@ -120,6 +120,10 @@ export default {
         if(chat.time_left > 0)
           --chat.time_left;
       });
+    },
+    updateChatStatus(status) {
+      this.selected_chat.status_name = status.name;
+      this.selected_chat.status = status.value;
     }
   }
 };
