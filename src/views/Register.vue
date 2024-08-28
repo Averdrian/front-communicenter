@@ -16,13 +16,19 @@
               <div class="form-group">
                   <label for="password">Contraseña:</label>
                   <div class="password-container">
-                      <input :type="showPassword ? 'text' : 'password'" id="password" class="password-input" v-model="password" required />
+                      <input :type="showPassword ? 'text' : 'password'" id="password" class="password-input" @change="samePassword" v-model="password" required />
                       <button type="button" id="toggle-password" class="toggle-password" @click="togglePasswordVisibility">
                           <i v-if="showPassword" class="fa-regular fa-eye" style="color: #FFD700"></i>
                           <i v-else class="fa-regular fa-eye-slash" style="color: #FFD700"></i>
                       </button>
                   </div>
               </div>
+              <div class="form-group">
+                <label for="repeat_password">Repetir contraseña:</label>
+                <input type="password" id="repeat_password" @change="samePassword" v-model="repeat_password" required/>
+              </div>
+              <p v-if="mismatch_password" class="error-message">Las contraseñas no coinciden.</p>
+
               <div v-if="isAdminOrganization" class="form-group">
                   <label for="organization">Organización:</label>
                   <select id="organization" v-model="organization" required>
@@ -55,13 +61,15 @@ export default {
           email: '',
           username: '',
           password: '',
+          repeat_password: '',
           organization_id: null,
           organizations: [],
           showPassword: false,
           isManager: false,
           error: false,
           emailError: false,
-          error_message: false
+          error_message: false,
+          mismatch_password: false,
       };
   },
   components : { ViewTitle },
@@ -92,7 +100,7 @@ export default {
       async handleRegister() {
           try {
               this.error_message = ""
-              if(this.emailError || this.username == '' || this.organization == null || this.password.length < 7) {
+              if(this.emailError || this.username == '' || this.organization == null || this.password.length < 7 || this.password != this.repeat_password || this.password != this.repeat_password) {
                 this.error = true;
                 if(this.emailError) this.error_message = "Formato de email no válido"
 
@@ -117,6 +125,10 @@ export default {
           } catch (error) {
               this.error = true;
           }
+      },
+
+      samePassword() {
+        this.mismatch_password = this.password != this.repeat_password && this.repeat_password != ''
       },
 
       isValidEmail(email) {
