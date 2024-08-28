@@ -14,7 +14,7 @@
 import ViewTitle from '@/components/ViewTitle.vue';
 import ChatCardList from '@/components/chats/ChatCardList.vue';
 import ChatMain from '@/components/chats/ChatMain.vue'
-import {chats} from '@/routes/chats';
+import {chats, get_chat} from '@/routes/chats';
 import io from 'socket.io-client';
 import { mapGetters } from 'vuex';
 
@@ -88,12 +88,12 @@ export default {
       this.receiveMessage(message.chat_id, message.new_chat_status,message.new_chat_status_name, 0);
     },
 
-    receiveMessage(chat_id, new_status, new_status_name, new_expires_at) {
+    async receiveMessage(chat_id, new_status, new_status_name, new_expires_at) {
         const index = this.chat_list.findIndex(chat => chat.id === chat_id);
         if(index == -1) {
-          console.log(new_status)
-          //TODO: coger el chat cuando no esta en la lista
-          //TODO: Cambiar la paginacion de los chats, paginar no por paginas sino por last_message_at
+          let chat = await get_chat(chat_id);
+          this.updateTimeLeft(chat);
+          this.chat_list.unshift(chat);
         }
         else {
           const [chat] = this.chat_list.splice(index, 1);

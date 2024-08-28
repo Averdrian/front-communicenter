@@ -12,6 +12,17 @@ import axiosInstance from "../axios";
         return response;
     }
 
+    export function get_chat(chat_id) {
+        let response = axiosInstance.get(`/chat/${chat_id}`)
+            .then( response => {
+                return response.data.chat;
+            })
+            .catch(error => {
+                throw error.response.data.error;
+            });
+        return response;
+    }
+
 
     export function chat_messages(chat_id, timestamp=null) {
         if(timestamp != null && Number.isInteger(timestamp)) timestamp = timestamp.toFixed(1)
