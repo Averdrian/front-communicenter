@@ -1,7 +1,7 @@
 <template>
   <div class="chat-main" v-if="chat">
     <div class="chat-header">
-      <ChatMainHeadder  @update-chat-status='updateChatStatus' :chat="chat" @click-notes="notesModal"/>
+      <ChatMainHeadder @update-chat-status='updateChatStatus' :chat="chat" @click-notes="notesModal"/>
     </div>
     <div class="messages-list" id="messages-list" @scroll="handleScroll">
       <div v-if="loading" class="loader"></div>
@@ -20,9 +20,14 @@
         @keyup.enter="handleEnter"
         placeholder="Escribe un mensaje..."
       />
-      <label class="file-input-label">
-        <i class="fa-solid fa-paperclip icon-file"></i>
+      <label 
+        @mouseover="hoverFileInput" @mouseout="fileInputClass = 'fa-solid fa-paperclip icon-file'"
+        :class="`file-input-label ${selectedFile ? 'icon-file-selected' : ''}`"
+        @click="handleLabelClick"
+      >
+      <i :class="fileInputClass" ></i>
         <input 
+          v-if="!selectedFile"
           type="file" 
           ref="fileInput"
           @change="handleFileChange"
@@ -30,7 +35,6 @@
       </label>
       <button @click="sendMessage">Enviar</button>
     </div>
-
 
     <div v-if="showNotesModal" class="modal-overlay" @click.self="showNotesModal = false">
       <div class="modal">
@@ -51,7 +55,6 @@
         <button @click="showNotesModal = false">Cerrar</button>
       </div>
     </div>
-
   </div>
 </template>
 
@@ -85,6 +88,7 @@ export default {
       showNotesModal: false,
       notes : [],
       newNote : "",
+      fileInputClass: "fa-solid fa-paperclip icon-file"
     };
   },
 
@@ -124,11 +128,18 @@ export default {
       }
     },
 
+    handleLabelClick(event) {
+      if (this.selectedFile) {
+        event.preventDefault(); // Evita que el input file se dispare
+        this.clearFile(); // Limpia el archivo seleccionado
+      }
+    },
+
     async sendMessage() {
       if (this.new_message.trim() !== '' || this.selectedFile) {
         try {
           const formData = new FormData();
-          formData.append('chat_id', this.chat.id);
+          formData.append('chat_id', this.chat.id); 
 
           if (this.selectedFile) {
             formData.append('media', this.selectedFile);
@@ -145,7 +156,8 @@ export default {
 
           this.new_message = '';
           this.selectedFile = null;
-          this.$refs.fileInput.value = '';
+          console.log(this.$refs.fileInput)
+          // this.$refs.fileInput.value = '';
 
           let response = await send_message(formData);
           
@@ -164,6 +176,16 @@ export default {
 
     handleFileChange(event) {
       this.selectedFile = event.target.files[0];
+    },
+
+    clearFile() {
+      this.selectedFile = null;
+      this.fileInputClass = "fa-solid fa-paperclip icon-file"
+      // this.$refs.fileInput.value = '';
+    },
+
+    hoverFileInput() {
+      if(this.selectedFile) this.fileInputClass = 'fa-solid fa-trash icon-file'
     },
 
     async receiveMessage(message_id) {
@@ -453,4 +475,15 @@ export default {
   border-radius: 3px;
   cursor: pointer;
 }
+
+.icon-file-selected {
+  background-color: #FFC107;
+  color: black;
+}
+
+.icon-file-selected:hover {
+  content: '\f00d';
+  background-color: red;
+}
+
 </style>
