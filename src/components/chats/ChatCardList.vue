@@ -1,6 +1,6 @@
 <template>
     <div class="chat-list">
-      <ChatCard @click="select_chat(n)" v-for="n in chat_list" :chat="n" :key="n" />
+      <ChatCard @click="select_chat(n)" v-for="n in chat_list" :chat="n" :selected="n.id == selected_chat?.id" :key="n" />
     </div>
   </template>
   
@@ -12,7 +12,7 @@ import ChatCard from './ChatCard.vue';
     components: {
       ChatCard,
     },
-    props: ['chat_list'],
+    props: ['chat_list', 'selected_chat'],
 
     methods : {
         select_chat(chat) {

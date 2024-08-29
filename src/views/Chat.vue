@@ -2,7 +2,7 @@
   <ViewTitle title="Chats"/>
   <div class="chat-container">
     <div class="sidebar">
-      <ChatCardList @selected="selectedChat" :chat_list="chat_list" ref="chat_card_list"/>
+      <ChatCardList @selected="selectedChat" :selected_chat="selected_chat" :chat_list="chat_list" ref="chat_card_list"/>
     </div>
     <div class="main-chat">
       <ChatMain @update-chat-status='updateChatStatus' v-if="selected_chat" :chat="selected_chat" @sended_message="sendedMessage" ref="chat_main"/>  

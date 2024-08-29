@@ -1,5 +1,5 @@
 <template>
-    <div class="chat-card">
+    <div :class="`chat-card ${selected ? 'selected-chat' : ''}`">
       <div class="card-header">
         <span class="phone-number">{{ formatPhoneNumber }}</span>
         <span class="whatsapp-name">{{ chat.whatsapp_name }}</span>
@@ -18,12 +18,7 @@
   import { AsYouType } from 'libphonenumber-js';
   
   export default {
-    props: {
-      chat: {
-        type: Object,
-        required: true,
-      },
-    },
+    props: ["chat", "selected"],
     computed: {
       formatPhoneNumber() {
         return new AsYouType(this.chat.country).input('+' + this.chat.phone);
@@ -65,6 +60,10 @@
     position: relative;
   }
   
+  .selected-chat {
+    background-color: #1a1a1a;
+  }
+
   .chat-card:hover {
     background-color: #2a2a2a;
   }
