@@ -61,7 +61,7 @@
   }
   
   .selected-chat {
-    background-color: #1a1a1a;
+    background-color: #1a1a1a !important;
   }
 
   .chat-card:hover {
