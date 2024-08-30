@@ -74,8 +74,10 @@ export default {
   },
   components : { ViewTitle },
   async created() {
+    if(this.isAdminOrganization) {
       let organizations = await getAllOrganizations();
       this.organizations = organizations;
+    }
   },
   computed : {
     ...mapGetters(['isAdminOrganization', 'user']),

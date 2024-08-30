@@ -1,16 +1,19 @@
 <template>
+  <div>
+    <button class="upper-button" @click="chat">Chat</button>
     <div class="buttons-container">
-      <button @click="login">Chat</button>
-      <button @click="register">Crear Usuario</button>
       <button @click="users">Usuarios</button>
+      <button @click="register">Crear Usuario</button>
+      <button @click="edit_prof">Editar Perfil</button>
       <button @click="edit_org">Editar organización</button>
-    </div>
+      </div>
+  </div>
   </template>
   
   <script>
   export default {
     methods: {
-      login() {
+      chat() {
         this.$router.push({ name: 'Chat' });
       },
       register() {
@@ -20,8 +23,11 @@
         this.$router.push({ name: 'Users' });
       },
       edit_org() {
-        this.$router.push({ name: 'EditOrg' });
-    }
+        this.$router.push({ name: 'EditOrganization' });
+      },
+      edit_prof() {
+        this.$router.push({ name: 'EditUser'});
+      }
     }
   };
   </script>
@@ -42,5 +48,12 @@
     box-sizing: border-box;
     text-align: center;
   }
+
+  .upper-button {
+    width: 800px !important;
+    max-width: 820px !important;
+    margin-bottom: 20px;
+  }
+
   </style>
   

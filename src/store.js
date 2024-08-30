@@ -13,7 +13,7 @@ const auth = createStore({
     SET_USER(state, user) {
       state.user = user;
       state.isAuthenticated = !!user;
-      state.isManager = user.role == 0
+      state.isManager = user.role == 1
       state.isAdminOrganization = user.organization_is_admin
     },
     LOGOUT(state) {
