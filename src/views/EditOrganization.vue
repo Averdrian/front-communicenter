@@ -12,10 +12,6 @@
             <label for="whatsapp_phone_id">WhatsApp Phone ID (opcional):</label>
             <input type="number" id="whatsapp_phone_id" v-model="whatsapp_phone_id" required/>
           </div>
-          <!-- <div class="form-group">
-            <label for="whatsapp_business_account_id">WhatsApp Business Account ID (opcional):</label>
-            <input type="number" id="whatsapp_business_account_id" v-model="whatsapp_business_account_id" required/>
-          </div> -->
           <div class="form-group">
             <label for="whatsapp_api_key">WhatsApp API Key (opcional):</label>
             <input type="text" id="whatsapp_api_key" v-model="whatsapp_api_key"/>

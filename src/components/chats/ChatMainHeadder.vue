@@ -30,14 +30,13 @@
 
 <script>
 import { AsYouType } from 'libphonenumber-js';
-import { statuses, updateStatus } from '@/routes/chats';
+import { updateStatus } from '@/routes/chats';
 
 export default {
-  props: ['chat'],
+  props: ['chat', 'statuses'],
   data() {
     return {
       dropdownVisible: false,
-      statuses : []
     }
   },
   computed: {
@@ -47,9 +46,6 @@ export default {
     formatPhoneNumber() {
       return new AsYouType(this.chat.country).input('+' + this.chat.phone);
     },
-  },
-  async created() {
-    this.statuses = await statuses();
   },
   methods: {
     toggleDropdown() {

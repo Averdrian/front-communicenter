@@ -2,10 +2,10 @@
   <ViewTitle title="Chats"/>
   <div class="chat-container">
     <div class="sidebar">
-      <ChatCardList @selected="selectedChat" :selected_chat="selected_chat" :chat_list="chat_list" ref="chat_card_list"/>
+      <ChatCardList @selected="selectedChat" @load-chats="loadChats" :selected_chat="selected_chat" :chat_list="chat_list" ref="chat_card_list"/>
     </div>
     <div class="main-chat">
-      <ChatMain @update-chat-status='updateChatStatus' v-if="selected_chat" :chat="selected_chat" @sended_message="sendedMessage" ref="chat_main"/>  
+      <ChatMain @update-chat-status='updateChatStatus' v-if="selected_chat" :chat="selected_chat" :statuses="statuses" @sended_message="sendedMessage" ref="chat_main"/>  
     </div>
   </div>
 </template>
@@ -14,7 +14,7 @@
 import ViewTitle from '@/components/ViewTitle.vue';
 import ChatCardList from '@/components/chats/ChatCardList.vue';
 import ChatMain from '@/components/chats/ChatMain.vue'
-import {chats, getChat} from '@/routes/chats';
+import {chats, getChat, statuses} from '@/routes/chats';
 import io from 'socket.io-client';
 import { mapGetters } from 'vuex';
 
@@ -31,14 +31,27 @@ export default {
   data() {
     return {
       chat_list : [],
+      more_chats: true,
+      last_timestamp: null,
+      statuses: [],
       selected_chat : null,
       socket_messages : null,
       socket_status : null,
-      interval_id : null
+      interval_id : null,
+      selected_statuses : []
     }
   },
   async created() {
-    this.chat_list = await chats();
+    let chats_data = await chats();
+    this.chat_list = chats_data.chats;
+    this.more_chats = chats_data.more;
+    this.last_timestamp = chats_data.last_timestamp;
+
+    this.statuses = await statuses();
+    this.selected_statuses = this.statuses.map((status) => {
+      return status.value
+    })
+
     this.chat_list.forEach(chat => {
       this.updateTimeLeft(chat);
     });
@@ -107,6 +120,17 @@ export default {
 
           this.chat_list.unshift(chat);
         }
+    },
+
+    async loadChats() {
+      if(!this.more_chats) {
+        return;
+      }
+      let chats_data = await chats(this.last_timestamp, this.selected_statuses);
+      this.chat_list = this.chat_list.concat(chats_data.chats)
+      this.more_chats = chats_data.more;
+      this.last_timestamp = chats_data.last_timestamp;
+      this.$refs.chat_card_list.unlockLoad();
     },
 
     updateTimeLeft(chat) {

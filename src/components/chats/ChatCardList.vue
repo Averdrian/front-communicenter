@@ -1,5 +1,5 @@
 <template>
-    <div class="chat-list">
+    <div class="chat-list" id="chat-list" @scroll="handleScroll">
       <ChatCard @click="select_chat(n)" v-for="n in chat_list" :chat="n" :selected="n.id == selected_chat?.id" :key="n" />
     </div>
   </template>
@@ -14,10 +14,27 @@ import ChatCard from './ChatCard.vue';
     },
     props: ['chat_list', 'selected_chat'],
 
+    data() {
+      return {
+        loading: false
+      };
+    },
+
     methods : {
         select_chat(chat) {
             this.$emit('selected', chat);
         },
+        handleScroll() {
+          const chatslist = document.getElementById('chat-list');
+          if(chatslist.scrollHeight - chatslist.clientHeight - chatslist.scrollTop  < 30 && !this.loading) {
+            this.loading = true;
+            this.$emit('load-chats')
+          }
+        },
+        unlockLoad() {
+          console.log('unload')
+          this.loading = false;
+        }
 
     }
   

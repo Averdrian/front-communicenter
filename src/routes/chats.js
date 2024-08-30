@@ -1,10 +1,13 @@
 import axiosInstance from "../axios";
 
 
-    export function chats() {
-        let response = axiosInstance.get("/chat")
+    export function chats(timestamp = null, statuses = []) {
+        if(timestamp != null && Number.isInteger(timestamp)) timestamp = timestamp.toFixed(1)
+        timestamp = timestamp != null ? '/'+timestamp : '';
+        const statusQuery = statuses.length > 0 ? `?statuses=${statuses.join(',')}` : '';
+        let response = axiosInstance.get(`/chat/get${timestamp}${statusQuery}`)
             .then( response => {
-                return response.data.chats;
+                return response.data;
             })
             .catch(error => {
                 throw error.response.data.error;

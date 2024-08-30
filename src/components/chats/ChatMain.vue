@@ -1,7 +1,7 @@
 <template>
   <div class="chat-main" v-if="chat">
     <div class="chat-header">
-      <ChatMainHeadder @update-chat-status='updateChatStatus' :chat="chat" @click-notes="notesModal"/>
+      <ChatMainHeadder @update-chat-status='updateChatStatus' :statuses="statuses" :chat="chat" @click-notes="notesModal"/>
     </div>
     <div class="messages-list" id="messages-list" @scroll="handleScroll">
       <div v-if="loading" class="loader"></div>
@@ -71,7 +71,7 @@ export default {
     Message,
     ChatMainHeadder
   },
-  props: ['chat'],
+  props: ['chat', 'statuses'],
   watch: { 
     chat: async function(new_chat) { 
       this.newChat(new_chat.id);
