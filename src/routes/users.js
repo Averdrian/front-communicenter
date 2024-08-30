@@ -26,7 +26,7 @@ import axiosInstance from "../axios"
         return response;
     }
 
-    export function get_user(user_id) {
+    export function getUser(user_id) {
         let response = axiosInstance.get(`/users/${user_id}`)
             .then(response => {
                 return response.data.user;
@@ -37,7 +37,7 @@ import axiosInstance from "../axios"
         return response;
     }
 
-    export function edit_user(user_id, form) {
+    export function editUser(user_id, form) {
         let response = axiosInstance.put(`/users/${user_id}`, form)
             .then(response => {
                 return response.data.user;

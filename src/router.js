@@ -8,9 +8,10 @@ import Register from "@/views/Register.vue";
 import Users from '@/views/Users.vue';
 import RegisterOrganization from './views/CreateOrganization.vue';
 import EditUser from './views/EditUser.vue';
+import Organizations from './views/Organizations.vue';
+import EditOrganization from './views/EditOrganization.vue';
 
 import store from './store';
-import Organizations from './views/Organizations.vue';
 
 const routes = [
     { path: "/", component: HelloWorld, name: "Landing" },
@@ -22,6 +23,8 @@ const routes = [
     { path: "/createorganization", component: RegisterOrganization, name: "CreateOrganization", meta: { requiresAdmin: true } },
     { path: "/organizations", component: Organizations, name: "Organizations", meta : {requiresAdmin: true}},
     { path: "/user/edit/:user_id?", component: EditUser, name: "EditUser", meta: { requiresAuth: true } },
+    { path: "/organizatioin/edit/:organization_id?", component: EditOrganization, name: "EditOrganization", meta: { requiresManager: true } },
+
 ];
 
 const router = createRouter({
@@ -42,7 +45,7 @@ router.beforeEach((to, from, next) => {
         }
     } else if (to.matched.some(record => record.meta.requiresManager)) {
         if (!isManager && !isAdminOrganization) {
-            next({ name: 'Login' });
+            next({ name: 'NotFound' });
         } else {
             next();
         }

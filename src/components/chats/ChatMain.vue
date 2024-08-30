@@ -59,11 +59,11 @@
 </template>
 
 <script>
-import { chat_messages, send_message } from '@/routes/chats';
-import { get_message } from '@/routes/messages';
+import { chatMessages, sendMessage } from '@/routes/chats';
+import { getMessage } from '@/routes/messages';
 import Message from './Message.vue';
 import ChatMainHeadder from './ChatMainHeadder.vue';
-import { create_note, chat_notes, delete_note } from '@/routes/chat_notes';
+import { createNote, getChatNotes, deleteNote } from '@/routes/chat_notes';
 
 export default {
   name: "ChatMain",
@@ -102,7 +102,7 @@ export default {
 
         this.loading = true;
         
-        let response = await chat_messages(chat_id);
+        let response = await chatMessages(chat_id);
         
         this.messages = response.messages.reverse();
         
@@ -159,7 +159,7 @@ export default {
           console.log(this.$refs.fileInput)
           // this.$refs.fileInput.value = '';
 
-          let response = await send_message(formData);
+          let response = await sendMessage(formData);
           
           this.messages.push(response.message);
           this.$emit('sended_message', response.message);
@@ -189,7 +189,7 @@ export default {
     },
 
     async receiveMessage(message_id) {
-      let message = await get_message(message_id);
+      let message = await getMessage(message_id);
 
       let toScroll = this.isBottomScrolled();
       this.messages.push(message);
@@ -204,7 +204,7 @@ export default {
     async loadMessages() {
       try{
         this.loading = true;
-        let response = await chat_messages(this.chat.id, this.last_timestamp);
+        let response = await chatMessages(this.chat.id, this.last_timestamp);
         this.messages = response.messages.reverse().concat(this.messages);
         this.more_messages = response.more_messages;
         this.last_timestamp = response.last_timestamp;
@@ -251,11 +251,11 @@ export default {
     async notesModal() {
       this.showNotesModal = true;
 
-      this.notes = await chat_notes(this.chat.id)
+      this.notes = await getChatNotes(this.chat.id)
     },
 
     async deleteNote(note_id) {
-      await delete_note(note_id);
+      await deleteNote(note_id);
       this.notes = this.notes.filter(note => note.id !== note_id);
     },
 
@@ -266,7 +266,7 @@ export default {
         note: this.newNote
       };
 
-      let note = await create_note(form);
+      let note = await createNote(form);
       this.notes.unshift(note);
       this.newNote = '';
     },

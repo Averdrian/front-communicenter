@@ -35,7 +35,7 @@
                     </label>
                 </div>
                 <div class="form-group register-button">
-                    <button id="register-button" type="button" @click="editUser">Editar Usuario</button>
+                    <button id="register-button" type="button" @click="editUser">Guardar</button>
                 </div>
                 <p v-if="error" class="error-message">Error al editar el usuario.</p>
             </form>
@@ -45,9 +45,9 @@
   
   <script>
   import ViewTitle from '@/components/ViewTitle.vue';
-  import { get_user } from '@/routes/users';
+  import { getUser } from '@/routes/users';
   import { mapGetters } from 'vuex';
-  import { edit_user } from '@/routes/users';
+  import { editUser } from '@/routes/users';
   
   export default {
     data() {
@@ -71,7 +71,6 @@
     components : { ViewTitle },
     async created() {
 
-      console.log(this.$route.params)
 
         if((!this.isAdminOrganization && !this.isManager) || !this.$route.params.user_id) {
             this.initial_email = this.user.email;
@@ -83,7 +82,7 @@
         }
         else {
           this.user_id = this.$route.params.user_id;
-          let user_to_edit = await get_user(this.user_id);
+          let user_to_edit = await getUser(this.user_id);
             this.initial_email = user_to_edit.email;
             this.initial_username = user_to_edit.username;
             this.initial_isManager = Boolean(user_to_edit.role);
@@ -136,7 +135,7 @@
                   return;
                 }
 
-                await edit_user(this.user_id, credentials); 
+                await editUser(this.user_id, credentials); 
                 
                 if(!this.isAdminOrganization && !this.isManager) 
                     this.$router.push({name: 'Landing'});

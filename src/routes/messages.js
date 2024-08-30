@@ -1,6 +1,6 @@
 import axiosInstance from "../axios";
 
-export function get_message(message_id) {
+export function getMessage(message_id) {
     let response = axiosInstance.get(`/messages/id/${message_id}`)
         .then( response => {
             return response.data.message;

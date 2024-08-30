@@ -30,7 +30,7 @@
 
 <script>
 import { AsYouType } from 'libphonenumber-js';
-import { statuses, update_status } from '@/routes/chats';
+import { statuses, updateStatus } from '@/routes/chats';
 
 export default {
   props: ['chat'],
@@ -74,7 +74,7 @@ export default {
       }
     },
     async changeStatus(status_value) {
-      let status = await update_status(this.chat.id, status_value);
+      let status = await updateStatus(this.chat.id, status_value);
 
       this.$emit('update-chat-status', status);
     }

@@ -20,7 +20,7 @@
         this.$router.push({ name: 'Users' });
       },
       edit_org() {
-        this.$router.push({ name: 'EditOrg' });
+        this.$router.push({ name: 'EditOrganization' });
     }
     }
   };

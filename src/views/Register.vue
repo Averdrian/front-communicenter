@@ -51,7 +51,7 @@
 
 <script>
 import ViewTitle from '@/components/ViewTitle.vue';
-import { get_organizations } from '@/routes/organizations';
+import { getAllOrganizations } from '@/routes/organizations';
 import { register } from '@/routes/users';
 import { mapGetters } from 'vuex';
 
@@ -74,7 +74,7 @@ export default {
   },
   components : { ViewTitle },
   async created() {
-      let organizations = await get_organizations();
+      let organizations = await getAllOrganizations();
       this.organizations = organizations;
   },
   computed : {

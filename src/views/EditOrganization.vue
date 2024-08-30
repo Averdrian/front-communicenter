@@ -1,9 +1,9 @@
 <template>
-    <ViewTitle title="Register Organization"/>
+    <ViewTitle title="Edit Organization"/>
     <div class="register-container">
       <div class="register">
-        <h2>Crear Organización</h2>
-        <form @submit.prevent="handleRegister">
+        <h2>Editar Organización</h2>
+        <form @submit.prevent="handleEdit">
           <div class="form-group">
             <label for="name">Nombre:</label>
             <input type="text" id="name" v-model="name" required/>
@@ -12,6 +12,10 @@
             <label for="whatsapp_phone_id">WhatsApp Phone ID (opcional):</label>
             <input type="number" id="whatsapp_phone_id" v-model="whatsapp_phone_id" required/>
           </div>
+          <!-- <div class="form-group">
+            <label for="whatsapp_business_account_id">WhatsApp Business Account ID (opcional):</label>
+            <input type="number" id="whatsapp_business_account_id" v-model="whatsapp_business_account_id" required/>
+          </div> -->
           <div class="form-group">
             <label for="whatsapp_api_key">WhatsApp API Key (opcional):</label>
             <input type="text" id="whatsapp_api_key" v-model="whatsapp_api_key"/>
@@ -21,7 +25,7 @@
             <input type="text" id="whatsapp_api_key" v-model="whatsapp_verify_token"/>
           </div>
           <div class="form-group register-button">
-            <button id="register-button" type="button" @click="handleRegister">Crear Organización</button>
+            <button id="register-button" type="button" @click="handleEdit">Guardar</button>
           </div>
           <p v-if="error" class="error-message">{{error_message}}</p>
         </form>
@@ -31,41 +35,61 @@
   
   <script>
   import ViewTitle from '@/components/ViewTitle.vue';
-  import { createOrganization } from '@/routes/organizations';
-  
+  import { mapGetters } from 'vuex';
+  import { getOrganization, editOrganization } from '@/routes/organizations';
+
   export default {
     data() {
       return {
+        org_id:null,
         name: '',
         whatsapp_phone_id: null,
         whatsapp_api_key: '',
         whatsapp_verify_token: '',
         error: false,
+        initial_name : null,
+        initial_whatsapp_phone_id: null,
+        initial_whatsapp_api_key: '',
+        initial_whatsapp_verify_token: '',
         error_message: ''
       };
     },
-    components: { ViewTitle },
+    components : { ViewTitle },
+    async created() {
+        
+        let organization;
+        if((!this.isAdminOrganization) || !this.$route.params.organization_id) {
+            organization = await getOrganization(this.user.organization_id);
+        }
+        else {
+          organization = await getOrganization(this.$route.params.organization_id);
+        }
+        this.org_id = organization.id;
+        this.name = this.initial_name = organization.name;
+        this.whatsapp_api_key = this.initial_whatsapp_api_key = organization.wa_api_key;
+        this.whatsapp_phone_id = this.initial_whatsapp_phone_id = organization.wa_phone_id;
+        this.whatsapp_verify_token = this.initial_whatsapp_verify_token = organization.wa_verify_token;
+
+    },
+    computed : {
+      ...mapGetters(['isAdminOrganization', 'user', 'isManager']),
+    },
     methods: {
-      async handleRegister() {
+      async handleEdit() {
         try {
           if (this.name === '') {
             this.error = true;
-            this.error_message = 'El nombre de usuario no debe estar vacío';
             return;
           }
-
-
-          const organizationData = {
-            name: this.name
-          };
-
-          if(this.whatsapp_phone_id != null) organizationData['wa_phone_id'] = this.whatsapp_phone_id;
-          if(this.whatsapp_api_key != null)  organizationData['wa_api_key'] = this.whatsapp_api_key;
-          if(this.whatsapp_verify_token != null) organizationData['wa_verify_token'] = this.whatsapp_verify_token;
-          let response = await createOrganization(organizationData);
-          if (response === true) this.$router.push({ name: 'Organizations' });
+          const organizationData = {};
+          if(this.name != this.initial_name) organizationData['name'] = this.name
+          if(this.whatsapp_phone_id != this.initial_whatsapp_phone_id) organizationData['wa_phone_id'] = this.whatsapp_phone_id;
+          if(this.whatsapp_api_key != this.initial_whatsapp_api_key)  organizationData['wa_api_key'] = this.whatsapp_api_key;
+          if(this.whatsapp_verify_token != this.initial_whatsapp_verify_token) organizationData['wa_verify_token'] = this.whatsapp_verify_token;
+          
+          if(Object.keys(organizationData).length > 0) await editOrganization(this.org_id, organizationData);
+          this.$router.push({ name: 'Organizations' });
         } catch (error) {
-          this.error_message = error.message;
           this.error = true;
         }
       },
@@ -156,5 +180,5 @@ input::-webkit-inner-spin-button {
 input[type=number] {
   -moz-appearance: textfield;
 }
-  </style>
+</style>
   

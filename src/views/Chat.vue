@@ -14,7 +14,7 @@
 import ViewTitle from '@/components/ViewTitle.vue';
 import ChatCardList from '@/components/chats/ChatCardList.vue';
 import ChatMain from '@/components/chats/ChatMain.vue'
-import {chats, get_chat} from '@/routes/chats';
+import {chats, getChat} from '@/routes/chats';
 import io from 'socket.io-client';
 import { mapGetters } from 'vuex';
 
@@ -91,7 +91,7 @@ export default {
     async receiveMessage(chat_id, new_status, new_status_name, new_expires_at) {
         const index = this.chat_list.findIndex(chat => chat.id === chat_id);
         if(index == -1) {
-          let chat = await get_chat(chat_id);
+          let chat = await getChat(chat_id);
           this.updateTimeLeft(chat);
           this.chat_list.unshift(chat);
         }

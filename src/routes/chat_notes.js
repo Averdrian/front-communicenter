@@ -1,7 +1,7 @@
 import axiosInstance from "@/axios";
 
 
-    export function chat_notes(chat_id) {
+    export function getChatNotes(chat_id) {
         let response = axiosInstance.get(`/chat/note/${chat_id}`)
             .then( response =>  { 
                 return response.data.notes;
@@ -12,7 +12,7 @@ import axiosInstance from "@/axios";
         return response
     } 
 
-    export function create_note(note_data) {
+    export function createNote(note_data) {
         let response = axiosInstance.post("/chat/note/create", note_data)
             .then( response =>  { 
                 return response.data.note;
@@ -23,7 +23,7 @@ import axiosInstance from "@/axios";
         return response
     } 
 
-    export function delete_note(note_id) {
+    export function deleteNote(note_id) {
         let response = axiosInstance.delete(`/chat/note/${note_id}`)
             .then( response =>  { 
                 if (response.status == 204) {

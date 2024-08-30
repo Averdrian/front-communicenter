@@ -12,7 +12,7 @@ import axiosInstance from "../axios";
         return response;
     }
 
-    export function get_chat(chat_id) {
+    export function getChat(chat_id) {
         let response = axiosInstance.get(`/chat/${chat_id}`)
             .then( response => {
                 return response.data.chat;
@@ -24,7 +24,7 @@ import axiosInstance from "../axios";
     }
 
 
-    export function chat_messages(chat_id, timestamp=null) {
+    export function chatMessages(chat_id, timestamp=null) {
         if(timestamp != null && Number.isInteger(timestamp)) timestamp = timestamp.toFixed(1)
         let response = axiosInstance.get(`/messages/${chat_id}${timestamp != null ? '/'+ timestamp : ''}`)
             .then(response => {
@@ -36,7 +36,7 @@ import axiosInstance from "../axios";
         return response;
     }
 
-    export function send_message(message_data) {
+    export function sendMessage(message_data) {
         let response = axiosInstance.post('/messages/send', message_data)
             .then(response => {
                 return response.data;
@@ -59,7 +59,7 @@ import axiosInstance from "../axios";
         return response;
     }
 
-    export function update_status(chat_id, status) {
+    export function updateStatus(chat_id, status) {
         let response = axiosInstance.patch(`/chat/${chat_id}/status/${status}`)
             .then(response => {
                 return response.data.status;
