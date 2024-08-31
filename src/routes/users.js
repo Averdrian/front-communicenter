@@ -14,11 +14,11 @@ import axiosInstance from "../axios"
     }
     
     
-    export function users(query_args = '') {
-        let query_str = query_args != '' ? '?'+query_args : ''
-        let response = axiosInstance.get(`/users${query_str}`)
+    export function users(page=1, organization_id=null) {
+        const org_str = organization_id ? `&organization_id=${organization_id}` : ''
+        let response = axiosInstance.get(`/users?page=${page}${org_str}`)
             .then(response => {
-                return response.data.users;
+                return response.data;
             })
             .catch(error => {
                 throw error;
@@ -45,6 +45,18 @@ import axiosInstance from "../axios"
             .catch(error => {
                 throw error;
             });
+        return response;
+    }
+
+    export function deleteUser(user_id) {
+        let response = axiosInstance.delete(`/users/${user_id}`)
+            .then(response => {
+                if(response.status == 204) return true;
+                else return false;
+            })
+            .catch(error => {
+                throw error;
+            })
         return response;
     }
 

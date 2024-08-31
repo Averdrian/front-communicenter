@@ -19,12 +19,12 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 20px; /* Espacio entre los botones */
+    gap: 20px; 
   }
   
   button {
-    flex: 1 1 45%; /* Ajuste para que los botones ocupen el 45% del ancho del contenedor */
-    max-width: 400px; /* Tamaño máximo para los botones */
+    flex: 1 1 45%;
+    max-width: 400px;
     padding: 15px 30px;
     border-radius: 5px;
     box-sizing: border-box;
