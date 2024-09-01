@@ -6,6 +6,7 @@
         <div class="filter-container">
           <label for="organization-select" class="filter-label">Organización</label>
           <select id="organization-select" v-model="selected_organization" class="user-select">
+            <option :value="null"></option>
             <option v-for="organization in organizations" :key="organization.id" :value="organization.id">{{ organization.name }}</option>
           </select>
           <button @click="searchOrg" class="search-btn">Buscar</button>

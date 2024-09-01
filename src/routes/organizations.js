@@ -23,6 +23,17 @@ export function getAllOrganizations() {
     return response;
 }
 
+export function getOrganizations(page=1) {
+    let response = axiosInstance.get(`/organization?page=${page}`)
+        .then( response => {
+            return response.data;
+        })
+        .catch( error => {
+            throw error;
+        })
+    return response;
+}
+
 export function createOrganization(organization_form) {
     let response = axiosInstance.post('/organization/create', organization_form)
         .then(response => {
