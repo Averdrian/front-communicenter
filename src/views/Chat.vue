@@ -2,7 +2,7 @@
   <ViewTitle title="Chats"/>
   <div class="chat-container">
     <div class="sidebar">
-      <ChatCardList @selected="selectedChat" @load-chats="loadChats" :selected_chat="selected_chat" :chat_list="chat_list" ref="chat_card_list"/>
+      <ChatCardList @selected="selectedChat" @filter-chats="loadFilterChats" @load-chats="loadChats" :statuses="statuses" :selected_chat="selected_chat" :chat_list="chat_list" ref="chat_card_list"/>
     </div>
     <div class="main-chat">
       <ChatMain @update-chat-status='updateChatStatus' v-if="selected_chat" :chat="selected_chat" :statuses="statuses" @sended_message="sendedMessage" ref="chat_main"/>  
@@ -38,7 +38,7 @@ export default {
       socket_messages : null,
       socket_status : null,
       interval_id : null,
-      selected_statuses : []
+      selected_statuses: null,
     }
   },
   async created() {
@@ -48,9 +48,7 @@ export default {
     this.last_timestamp = chats_data.last_timestamp;
 
     this.statuses = await statuses();
-    this.selected_statuses = this.statuses.map((status) => {
-      return status.value
-    })
+    
 
     this.chat_list.forEach(chat => {
       this.updateTimeLeft(chat);
@@ -127,9 +125,13 @@ export default {
         return;
       }
       let chats_data = await chats(this.last_timestamp, this.selected_statuses);
+      chats_data.chats.forEach((chat) => {
+        this.updateTimeLeft(chat)
+      })
       this.chat_list = this.chat_list.concat(chats_data.chats)
       this.more_chats = chats_data.more;
       this.last_timestamp = chats_data.last_timestamp;
+
       this.$refs.chat_card_list.unlockLoad();
     },
 
@@ -148,6 +150,19 @@ export default {
     updateChatStatus(status) {
       this.selected_chat.status_name = status.name;
       this.selected_chat.status = status.value;
+    },
+    async loadFilterChats(statuses) {
+      this.selected_statuses = statuses;
+      this.last_timestamp = null;
+      let chats_data = await chats(null, this.selected_statuses)
+      chats_data.chats.forEach((chat) => {
+        this.updateTimeLeft(chat)
+      })
+      this.chat_list = chats_data.chats;
+      this.more_chats = chats_data.more;
+      this.last_timestamp = chats_data.last_timestamp;
+      this.$refs.chat_card_list.unlockLoad();
+
     }
   }
 };

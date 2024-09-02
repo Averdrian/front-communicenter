@@ -19,6 +19,7 @@
         v-model="new_message" 
         @keyup.enter="handleEnter"
         placeholder="Escribe un mensaje..."
+        :disabled="chat.time_left == 0"
       />
       <label 
         @mouseover="hoverFileInput" @mouseout="fileInputClass = 'fa-solid fa-paperclip icon-file'"
@@ -31,9 +32,10 @@
           type="file" 
           ref="fileInput"
           @change="handleFileChange"
+          :disabled="chat.time_left == 0"
         />
       </label>
-      <button @click="sendMessage">Enviar</button>
+      <button class="send-button" :disabled="chat.time_left==0" @click="sendMessage">Enviar</button>
     </div>
 
     <div v-if="showNotesModal" class="modal-overlay" @click.self="showNotesModal = false">
@@ -156,8 +158,6 @@ export default {
 
           this.new_message = '';
           this.selectedFile = null;
-          console.log(this.$refs.fileInput)
-          // this.$refs.fileInput.value = '';
 
           let response = await sendMessage(formData);
           
@@ -279,7 +279,6 @@ export default {
     },
 
     updateChatStatus(status) {
-      console.log('chatmain')
       this.$emit('update-chat-status', status);
     }
 
@@ -484,6 +483,11 @@ export default {
 .icon-file-selected:hover {
   content: '\f00d';
   background-color: red;
+}
+
+.send-button {
+  margin-left: 20px;
+  height: 100%;
 }
 
 </style>

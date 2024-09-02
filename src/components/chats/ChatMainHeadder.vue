@@ -55,10 +55,6 @@ export default {
     clickNotes() {
       this.$emit('click-notes');
     },
-    handleOptionClick(option) {
-      console.log(`Selected: ${option}`);
-      this.dropdownVisible = false; // Cierra el dropdown después de seleccionar una opción
-    },
     handleClickOutside(event) {
       const dropdownMenu = this.$refs.dropdownMenu;
       const dropdownToggle = this.$refs.dropdownToggle;

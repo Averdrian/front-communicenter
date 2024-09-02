@@ -3,15 +3,7 @@
     <ViewTitle title="Organizaciones"/>
     <div class="organization-list">
       <div class="title-container">
-        <!-- <div class="filter-container">
-          <label for="organization-select" class="filter-label">Organización</label>
-          <select id="organization-select" v-model="selected_organization" class="organization-select">
-            <option :value="null"></option>
-            <option v-for="organization in organizations" :key="organization.id" :value="organization.id">{{ organization.name }}</option>
-          </select>
-          <button @click="searchOrg" class="search-btn">Buscar</button>
-        </div> -->
-        <h1 class="title">Listado de Usuarios</h1>
+        <h1 class="title">Listado de Organizaciones</h1>
       </div>
       <div class="organization-items">
         <OrganizationItem v-for="organization in organizations" :key="organization.id" :organization="organization" />

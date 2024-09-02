@@ -15,7 +15,7 @@ import store from './store';
 
 const routes = [
     { path: "/", component: HelloWorld, name: "Landing" },
-    { path: "/login", component: Login, name: "Login" },
+    { path: "/login", component: Login, name: "Login", meta: {requiresNotLogged: true} },
     { path: "/chat", component: Chat, name: "Chat" },
     { path: "/:pathMatch(.*)*", name: "NotFound", component: NotFound },
     { path: "/register", component: Register, name: "Register", meta: { requiresManager: true } },
@@ -55,7 +55,14 @@ router.beforeEach((to, from, next) => {
         } else {
             next();
         }
-    } else {
+    }else if(to.matched.some(record => record.meta.requiresNotLogged)) {
+        if(loggedIn) {
+            next({ name: 'Landing'});
+        } else {
+            next();
+        }
+    }
+     else {
         next();
     }
 });
