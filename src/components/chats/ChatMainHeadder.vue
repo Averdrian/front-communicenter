@@ -140,18 +140,18 @@ export default {
   border-radius: 6px;
   padding: 5px 0;
   position: absolute;
-  z-index: 1;
+  z-index: 10000;
   bottom: 125%;
   left: 50%;
   margin-left: -60px;
   opacity: 0;
   transition: opacity 0.3s;
 }
-
+/*
 .tooltip:hover .tooltiptext {
   visibility: visible;
   opacity: 1;
-}
+}*/
 
 .dropdown-menu {
   position: absolute;

@@ -242,9 +242,8 @@ form input:focus, form select:focus {
 }
 
 .checkbox-label input[type="checkbox"] {
-  width: 20px;
-  height: 20px;
-  margin-left: 10px;
+  width: 10px;
+  height: 10px;
   cursor: pointer;
   appearance: none;
   -webkit-appearance: none;
@@ -264,7 +263,6 @@ form input:focus, form select:focus {
 .checkbox-label input[type="checkbox"]:checked::after {
   content: '✔'; /* Unicode character for check mark */
   color: #000;
-  font-size: 16px;
   position: absolute;
   top: 50%;
   left: 50%;

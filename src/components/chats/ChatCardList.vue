@@ -162,6 +162,32 @@ import ChatCard from './ChatCard.vue';
   
   .status-option input[type="checkbox"] {
     margin-right: 8px;
+    width: 20px;
+    height: 20px;
+    margin-left: 10px;
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    border: 2px solid #fff;
+    border-radius: 3px;
+    background-color: #333;
+    display: inline-block;
+    position: relative;
+  }
+
+  .status-option input[type="checkbox"]:checked {
+    background-color: #FFD700;
+    border: 2px solid #FFD700;
+  }
+  
+  .status-option input[type="checkbox"]:checked::after {
+    content: '✔'; /* Unicode character for check mark */
+    color: #000;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
   }
   
   .selected-items {
